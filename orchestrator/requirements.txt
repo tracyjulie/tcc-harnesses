@@ -1,0 +1,2 @@
+# O orquestrador usa apenas a biblioteca padrao do Python 3.10.10.
+# Nao ha dependencias externas a instalar.

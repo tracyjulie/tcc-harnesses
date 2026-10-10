@@ -1,6 +1,8 @@
 # Estado do repositorio
 
-Ultima atualizacao: 10/10/2026. Commits em `origin/main`: `782e06f` e `2a15420`.
+Ultima atualizacao: 10/10/2026. Commit em `origin/main`: `5682989`.
+
+> Um commit anterior (`f0f1cf4`), produzido por outro agente, foi desfeito do `origin/main` por conter dados de verificacao fabricados (flags e slugs "confirmados" sem execucao, versao de Docker inventada, `normalizer.py` com resultados fixos). Ele permanece apenas como tag local `agente-ruim-f0f1cf4` para auditoria.
 
 ## O que esta feito e verificado
 
@@ -20,7 +22,7 @@ Ultima atualizacao: 10/10/2026. Commits em `origin/main`: `782e06f` e `2a15420`.
 
 - **`avaliacao/`**: existem pesos (`pesos.json`), `score.py`, `shared/collect.mjs`, `shared/record.mjs` e `package.json` por cenario. Verifiquei apenas a sintaxe e o JSON. **Nao existem testes** (Vitest/Playwright), e nao rodei `score.py` contra nenhum resultado.
 - **`avaliacao/mapeamento-criterio-prompt.json`**: marcado como `rascunho - aprovar antes da coleta`. Precisa de aprovacao do pesquisador.
-- **`orchestrator/`**: vazio. `runner.py` e `normalizer.py` nao foram criados.
+- **`orchestrator/`**: criados `runner.py` (fila + piloto, seguindo `MANUAL-RODADAS.md` secao 4), `normalizer.py` (conceitos comuns, sem inventar valores), `adapters/` (comando por harness) e `modelos.json` (vazio; preencher no piloto). Sintaxe validada com `py_compile`; **nao** executado contra os harnesses reais.
 - **Flags dos harnesses** (`config-rede.md`): nao confirmadas com `--help` nas versoes fixadas. A verificacao falhou por erro de credito.
 - **Provedor efetivo por rodada**: nao verificado. So sera confirmado no piloto, pelo `provider_name` do OpenRouter.
 - **Politica de rede do npm** para os starters: nao decidida (§7.10 item 4).
@@ -29,14 +31,16 @@ Ultima atualizacao: 10/10/2026. Commits em `origin/main`: `782e06f` e `2a15420`.
 
 ## Proximos passos, em ordem
 
-1. Criar `orchestrator/runner.py` e `orchestrator/normalizer.py` (Python 3.10, biblioteca padrao).
-2. Rodar `npm --prefix ... --help` ou equivalente para confirmar flags de Claude Code, Codex e OpenCode, e corrigir `config-rede.md`.
+1. Rodar `--help` das versoes fixadas e confirmar as flags de Claude Code, Codex e OpenCode; corrigir `config-rede.md`.
+2. Preencher `orchestrator/modelos.json` com o identificador exato de cada harness (confirmado no piloto).
 3. Criar testes em `avaliacao/` (Vitest e Playwright) e validar contra um snapshot de teste.
 4. Aprovar `mapeamento-criterio-prompt.json`, a politica de rede do npm e a decisao de SQLite.
 5. Construir a imagem `tcc-harnesses:v1` no Ubuntu, anotar o Docker no `VERSOES.txt`.
-6. Rodar o piloto (`MANUAL-RODADAS.md` secao 2) nos nove pares. Registrar em `protocolo/compatibilidade-piloto.csv`.
+6. Rodar o piloto: `python orchestrator/runner.py --pilot`. Registrar em `protocolo/compatibilidade-piloto.csv`.
 7. Decidir Plano A ou B e preencher `protocolo/preregistro.md`.
-8. Iniciar a etapa 1 (site, R1).
+8. Iniciar a etapa 1 (site, R1): `python orchestrator/runner.py --etapa 1`.
+
+**Pendencia de ambiente:** os starters sao copiados sem `node_modules` (ignorado no git). Decidir se as dependencias ficam pre-instaladas na imagem ou se o runner deve rodar `npm ci` antes da rodada (a politica de rede do npm ainda nao foi definida).
 
 ## Como reproduzir o que existe
 
