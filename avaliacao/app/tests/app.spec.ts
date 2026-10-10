@@ -165,6 +165,7 @@ test('A02 - login, logout e protecao', async ({ page }) => {
 
 test('A03 - usuario comum nao modifica reservas alheias', async ({ browser }) => {
   const contexto = await browser.newContext();
+  const contexto2 = await browser.newContext();
   await avaliar('A03', async () => {
     const page = await contexto.newPage();
     await abrirApp(page);
@@ -177,8 +178,8 @@ test('A03 - usuario comum nao modifica reservas alheias', async ({ browser }) =>
     } catch {
       throw new Error('NAO_OBSERVADO fluxo de criacao de reserva indiscoverivel');
     }
-    // outro usuario em outro contexto tentando editar via interface
-    const page2 = await contexto.newPage();
+    // outro usuario em um CONTEXTO SEPARADO, tentando editar pela interface
+    const page2 = await contexto2.newPage();
     await abrirApp(page2);
     if (!(await autenticar(page2, `outro_${Date.now()}@example.com`))) {
       throw new Error('NAO_OBSERVADO segundo login indiscoverivel');
@@ -208,6 +209,7 @@ test('A03 - usuario comum nao modifica reservas alheias', async ({ browser }) =>
     return 'edicao alheia rejeitada';
   });
   await contexto.close();
+  await contexto2.close();
 });
 
 test('A04 - administrador gerencia salas', async ({ page }) => {
