@@ -26,12 +26,14 @@ const criterios = pesos.criterios.map((c) => {
     return { id: c.id, descricao: c.descricao, peso: c.peso, verificavel: false, passou: null, motivo: c.motivo, partes: [] };
   }
   const partes = partesPorCriterio[c.id] ?? [];
+  // Booleans (das partes de build) sao normalizados para 1/0.
+  const val = (p) => (p.passou === true ? 1 : p.passou === false ? 0 : p.passou);
   let passou = null;
-  if (partes.some((p) => p.passou === 0)) passou = 0;
-  else if (partes.length && partes.every((p) => p.passou === 1)) passou = 1;
+  if (partes.some((p) => val(p) === 0)) passou = 0;
+  else if (partes.length && partes.every((p) => val(p) === 1)) passou = 1;
   const motivo = partes.length === 0
     ? 'nao observado (teste nao executado)'
-    : partes.filter((p) => p.passou !== 1).map((p) => `${p.id}: ${p.motivo}`).join(' | ') || 'ok';
+    : partes.filter((p) => val(p) !== 1).map((p) => `${p.id}: ${p.motivo}`).join(' | ') || 'ok';
   return { id: c.id, descricao: c.descricao, peso: c.peso, verificavel: true, passou, motivo, partes: partes.map((p) => p.id) };
 });
 

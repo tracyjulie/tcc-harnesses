@@ -69,7 +69,7 @@ def executar(comando, cwd, log, timeout=1800, env=None):
 def registrar_parcial(results_dir, cenario, sufixo, passou, motivo):
     ident = f"{CENARIOS[cenario]}_{sufixo}"
     (results_dir / f"{ident}.json").write_text(
-        json.dumps({"id": ident, "passou": passou, "motivo": motivo}, ensure_ascii=False),
+        json.dumps({"id": ident, "passou": 1 if passou else 0, "motivo": motivo}, ensure_ascii=False),
         encoding="utf-8",
     )
 
