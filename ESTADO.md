@@ -20,7 +20,7 @@ Ultima atualizacao: 10/10/2026. Commit em `origin/main`: `5682989`.
 
 ## O que esta parcial ou nao verificado
 
-- **`avaliacao/`**: existem pesos (`pesos.json`), `score.py`, `shared/collect.mjs`, `shared/record.mjs` e `package.json` por cenario. Verifiquei apenas a sintaxe e o JSON. **Nao existem testes** (Vitest/Playwright), e nao rodei `score.py` contra nenhum resultado.
+- **`avaliacao/`**: alem dos pesos, `score.py` e `shared/collect.mjs`, agora existem as suites Playwright (`site/tests`, `jogo/tests`, `app/tests`), `shared/helpers.mjs`, configs por cenario e o avaliador `avaliar.py` (build, servidor, testes, agregacao). O fluxo de partes -> `collect.mjs` -> `score.py` foi validado com resultados simulados. **Ainda nao executado** contra um snapshot real de agente (exige `npm install` do Playwright e o build do starter). Os testes de jogo (pixels) e os criterios de API do app (A02-A10) permanecem heuristicos ou `null` ate o congelamento dos contratos.
 - **`avaliacao/mapeamento-criterio-prompt.json`**: marcado como `rascunho - aprovar antes da coleta`. Precisa de aprovacao do pesquisador.
 - **`orchestrator/`**: criados `runner.py` (fila + piloto, seguindo `MANUAL-RODADAS.md` secao 4), `normalizer.py` (conceitos comuns, sem inventar valores), `adapters/` (comando por harness) e `modelos.json` (vazio; preencher no piloto). Sintaxe validada com `py_compile`; **nao** executado contra os harnesses reais.
 - **Flags dos harnesses** (`config-rede.md`): nao confirmadas com `--help` nas versoes fixadas. A verificacao falhou por erro de credito.
@@ -33,8 +33,8 @@ Ultima atualizacao: 10/10/2026. Commit em `origin/main`: `5682989`.
 
 1. Rodar `--help` das versoes fixadas e confirmar as flags de Claude Code, Codex e OpenCode; corrigir `config-rede.md`.
 2. Preencher `orchestrator/modelos.json` com o identificador exato de cada harness (confirmado no piloto).
-3. Criar testes em `avaliacao/` (Vitest e Playwright) e validar contra um snapshot de teste.
-4. Aprovar `mapeamento-criterio-prompt.json`, a politica de rede do npm e a decisao de SQLite.
+3. Instalar o Playwright (`npx playwright install chromium`) e rodar as suites contra um snapshot de teste; congelar a versao dos testes.
+4. Aprovar `mapeamento-criterio-prompt.json`, a politica de rede do npm e a decisao de SQLite; congelar o contrato de API do app (`avaliacao/app/contrato.json`).
 5. Construir a imagem `tcc-harnesses:v1` no Ubuntu, anotar o Docker no `VERSOES.txt`.
 6. Rodar o piloto: `python orchestrator/runner.py --pilot`. Registrar em `protocolo/compatibilidade-piloto.csv`.
 7. Decidir Plano A ou B e preencher `protocolo/preregistro.md`.

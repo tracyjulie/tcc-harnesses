@@ -1,0 +1,4 @@
+{
+  "_observacao": "Contrato do aplicativo a congelar ANTES da coleta (plano v2, secao 8.2). O avaliador usa `start_cmd` para subir o ReservaFacil gerado. Enquanto os criterios A02-A10 nao tiverem contrato de API congelado (rotas, codigos HTTP, autenticacao), eles permanecem `verificavel: false` e recebem `null`. Preencher com o comando real de inicializacao, por exemplo: [\"npm\", \"run\", \"dev\"].",
+  "start_cmd": null
+}
