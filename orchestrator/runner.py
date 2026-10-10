@@ -214,6 +214,27 @@ def preparar_workspace(run_id, cenario, dry_run=False):
     return dst
 
 
+def preparar_dependencias(workspace, args, run_dir):
+    """Instala as dependencias do starter num passo com rede.
+
+    O agente roda em rede isolada e nao instala pacotes; as dependencias vem do
+    `package-lock.json`, instaladas aqui com o Node da imagem (passo separado,
+    antes do isolamento). Pular com --npm-deps skip.
+    """
+    if args.dry_run or args.npm_deps == "skip":
+        return
+    if (workspace / "node_modules").exists():
+        return
+    comando = "npm ci" if args.npm_deps == "ci" else "npm install --no-audit --no-fund"
+    with (run_dir / "deps.log").open("wb") as saida:
+        subprocess.run(
+            ["docker", "run", "--rm",
+             "-v", f"{workspace}:/w", "-w", "/w",
+             args.image, "bash", "-lc", comando],
+            stdout=saida, stderr=subprocess.STDOUT, check=False,
+        )
+
+
 def preparar_home(run_id, harness, dry_run=False, modelo=None, gateway_url=None, api_key=None):
     home = RUNS / run_id / "home"
     home.mkdir(parents=True, exist_ok=True)
@@ -284,6 +305,7 @@ def gravar_manifest(run_id, linha, workspace, prompt_path, args, versoes):
         "iteration_limit": args.iteration_limit,
         "cost_limit_usd": args.cost_limit,
         "network_policy": f"isolado ({args.network}); saida apenas para o roteador",
+        "npm_deps": args.npm_deps,
     }
     caminho = RUNS / run_id / "manifest.json"
     if not args.dry_run:
@@ -427,6 +449,7 @@ def processar_linha(linha, args, versoes, tabela_modelos):
 
     modelo = resolver_modelo(linha["harness"], linha["provedor"], linha["modelo_id"], tabela_modelos)
     workspace = preparar_workspace(run_id, linha["cenario"], args.dry_run)
+    preparar_dependencias(workspace, args, run_dir)
     home = preparar_home(run_id, linha["harness"], args.dry_run, modelo,
                          getattr(args, "gateway_url", None), getattr(args, "api_key", None))
 
@@ -450,7 +473,8 @@ def processar_linha(linha, args, versoes, tabela_modelos):
     snapshot = run_dir / "source-snapshot"
     if snapshot.exists():
         shutil.rmtree(snapshot)
-    shutil.copytree(workspace, snapshot)
+    shutil.copytree(workspace, snapshot,
+                    ignore=shutil.ignore_patterns("node_modules", "dist"))
     (run_dir / "source-snapshot.sha256").write_text(sha256_arvore(snapshot), encoding="utf-8")
 
     stderr_texto = ""
@@ -705,6 +729,8 @@ def montar_parser():
     p.add_argument("--image", default="tcc-harnesses:v1")
     p.add_argument("--network", default="rede-experimento")
     p.add_argument("--time-limit", type=int, default=1200, help="limite em segundos por rodada")
+    p.add_argument("--npm-deps", choices=["ci", "install", "skip"], default="ci",
+                   help="preparo das dependencias do starter antes da rodada (rede)")
     p.add_argument("--iteration-limit", type=int, default=None)
     p.add_argument("--cost-limit", type=float, default=None, help="limite em USD por rodada")
     p.add_argument("--gateway", default="9router", help="rotulo do roteador (manifest)")
