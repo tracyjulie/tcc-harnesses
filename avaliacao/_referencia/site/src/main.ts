@@ -1,5 +1,3 @@
-import "./style.css";
-
 type Palestra = { titulo: string; trilha: "IA" | "Web" | "Segurança"; horario: string; palestrante: string };
 type Inscricao = { nome: string; email: string; palestra: string };
 
