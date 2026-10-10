@@ -23,7 +23,8 @@ Ultima atualizacao: 10/10/2026. Commit em `origin/main`: `5682989`.
 - **`avaliacao/`**: suites Playwright (`site/tests`, `jogo/tests`, `app/tests`), `shared/helpers.mjs`, configs por cenario e o avaliador `avaliar.py` (build em copia, servidor em porta livre com `--strictPort`, testes, agregacao). **Validado de ponta a ponta no servidor** contra `site-base` (starter vazio): build aprovado, Playwright conecta, `test-results.json` gerado com motivos corretos. Playwright fixado em 1.64.0 (1.55.0 nao suporta Ubuntu 26.04). **Ressalva:** o avaliador roda com o Node do host (20); o cenario `app` exige Node 22 (`node:sqlite`), entao o avaliador deve rodar dentro da imagem (Node 22) antes da coleta. Testes de jogo (pixels) e criterios de API do app (A02-A10) seguem heuristicos ou `null` ate congelamento dos contratos.
 - **`avaliacao/mapeamento-criterio-prompt.json`**: marcado como `rascunho - aprovar antes da coleta`. Precisa de aprovacao do pesquisador.
 - **`orchestrator/`**: criados `runner.py` (fila + piloto, seguindo `MANUAL-RODADAS.md` secao 4), `normalizer.py` (conceitos comuns, sem inventar valores), `adapters/` (comando por harness) e `modelos.json` (vazio; preencher no piloto). Sintaxe validada com `py_compile`; **nao** executado contra os harnesses reais.
-- **Flags dos harnesses** (`config-rede.md`): **confirmadas** com `--help` na imagem `tcc-harnesses:v1` (Claude 2.1.197, Codex 0.160.0, OpenCode 1.18.34). Comandos efetivos ajustados em `orchestrator/adapters/` (Codex `--skip-git-repo-check` e bypass de sandbox; OpenCode `--auto`).
+- **Flags dos harnesses** (`config-rede.md`): **confirmadas** com `--help` na imagem `tcc-harnesses:v1` (Claude 2.1.197, Codex 0.160.0, OpenCode 1.18.34). Comandos efetivos ajustados em `orchestrator/adapters/` (Codex `--skip-git-repo-check` e bypass de sandbox; OpenCode `--auto`; Claude `--verbose`).
+- **Ligacao ao 9router**: o runner descobre o gateway da rede (`172.18.0.1:20128`), le a chave de `~/.tcc-segredos/9router.key`, gera `opencode.json`/`.codex/config.toml` e exporta `OPENAI_*`/`ANTHROPIC_*`. Piloto `--pilot --pilot-model deepseek` passou nos **3 harnesses** (`compativel` em autentica/le/edita/executa/gera_logs). `modelos.json` preenchido com as rotas `openrouter/...`.
 - **Node da imagem**: o `Dockerfile` instalava Node 20, mas os starters exigem Node 22 (`node:sqlite` do app). **Corrigido para Node 22 e imagem reconstruida** em 10/10/2026 (`tcc-harnesses:v1`, Node v22.23.3, npm 10.9.9).
 - **Provedor efetivo por rodada**: nao verificado. So sera confirmado no piloto, pelo `provider_name` do OpenRouter.
 - **Politica de rede do npm** para os starters: nao decidida (§7.10 item 4).
@@ -32,10 +33,10 @@ Ultima atualizacao: 10/10/2026. Commit em `origin/main`: `5682989`.
 
 ## Proximos passos, em ordem
 
-1. Preencher `orchestrator/modelos.json` com o identificador exato de cada harness (confirmado no piloto).
-2. Aprovar `mapeamento-criterio-prompt.json`, a politica de rede do npm e a decisao de SQLite; congelar o contrato de API do app (`avaliacao/app/contrato.json`).
-3. Rodar o avaliador dentro da imagem (Node 22) para o cenario `app`.
-4. Rodar o piloto: `python orchestrator/runner.py --pilot`. Registrar em `protocolo/compatibilidade-piloto.csv`.
+1. Adicionar/disponibilizar `openai/gpt-6-luna` no 9router/OpenRouter (hoje so existe `gpt-6-luna-pro`, bloqueado por guardrail) e confirmar o slug.
+2. Rodar o piloto completo dos 9 pares: `python orchestrator/runner.py --pilot`. Registrar em `protocolo/compatibilidade-piloto.csv`.
+3. Aprovar `mapeamento-criterio-prompt.json`, a politica de rede do npm e a decisao de SQLite; congelar o contrato de API do app (`avaliacao/app/contrato.json`).
+4. Rodar o avaliador dentro da imagem (Node 22) para o cenario `app`.
 5. Decidir Plano A ou B e preencher `protocolo/preregistro.md`.
 6. Iniciar a etapa 1 (site, R1): `python orchestrator/runner.py --etapa 1`.
 
