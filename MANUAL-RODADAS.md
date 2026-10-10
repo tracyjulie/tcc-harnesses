@@ -190,11 +190,25 @@ Só então iniciar a etapa seguinte.
 - Provedores divergentes do fixado são sinalizados. Fazer análise de sensibilidade excluindo essas rodadas e reportar se a conclusão muda.
 - Interrupções por crédito e falhas de infraestrutura entram na análise de sensibilidade (§9, item 8).
 
-## 9. Pendências antes da primeira rodada real
+## 9. Pendencias antes da primeira rodada real (atualizado 10/10/2026)
 
-- Confirmar slugs do GPT-6 Luna e do Claude Haiku 5.5 no OpenRouter, e os provedores efetivos (`VERSOES.txt` ainda não tem essa verificação).
-- Confirmar contra `--help` as flags de Codex e OpenCode citadas em `config-rede.md`.
-- Criar `fixtures/site-base`, `fixtures/jogo-base`, `fixtures/app-base` com commit, lockfile e scripts, sem solução e sem testes de avaliação.
-- Criar `avaliacao/site`, `avaliacao/jogo`, `avaliacao/app` com as suítes congeladas, fora do alcance do agente.
-- Criar `orchestrator/runner.py` e `orchestrator/normalizer.py`. Hoje existe só o gerador da fila.
-- Decidir a política de rede do npm para os starters (§7.10 item 4).
+O que ja foi resolvido: slugs/provedores (`preregistro.md`), flags dos
+harnesses (`config-rede.md`), starters, avaliadores, `runner.py`,
+`normalizer.py`, custo/tokens pelo 9router (`router_logs.py`), avaliador em
+contêiner Node 22, retry (1 tentativa via `--force`), política de npm.
+
+O que falta antes da coleta:
+
+- **Validar as suites** (`avaliacao/site|jogo|app`) contra implementações de
+  referência. Os proxies do jogo e a descoberta de rotas do app ainda não
+  foram exercitados contra um app real.
+- **Refazer o piloto (P9)** com o avaliador completo e só então considerar o
+  piloto aprovado (gasta crédito; requer OK da pesquisadora).
+- **Ratificar** a decisão do contrato do app (`avaliacao/app/contrato.json`).
+- Preencher `dados/dicionario-de-dados.md` e criar o esqueleto de `analise/`.
+
+Observação sobre o orquestrador: o avaliador roda em contêiner
+(`--evaluator container`, padrão) a partir de `tcc-harnesses:v1`, com o
+repositório e `~/.cache/ms-playwright` montados; use `--evaluator host` só para
+diagnóstico local.
+

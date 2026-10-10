@@ -1,16 +1,16 @@
 {
   "cenario": "app",
-  "fonte": "plano-tcc-harnesses-v2.md secao 8.1 (pesos propostos, a aprovar)",
+  "fonte": "plano-tcc-harnesses-v2.md secao 8.1 (pesos aprovados 10/10/2026)",
   "criterios": [
     { "id": "A01", "descricao": "Servidor e frontend iniciam sem erro", "peso": 5, "verificavel": true },
-    { "id": "A02", "descricao": "Login, logout e protecao de endpoints", "peso": 5, "verificavel": false, "motivo": "rotas e rotulos nao estao no prompt; exige contrato de API congelado" },
-    { "id": "A03", "descricao": "Usuario comum nao modifica reservas alheias", "peso": 5, "verificavel": false, "motivo": "exige contrato de API e dois usuarios" },
-    { "id": "A04", "descricao": "Administrador gerencia salas", "peso": 4, "verificavel": false, "motivo": "exige contrato de API" },
-    { "id": "A05", "descricao": "CRUD de reservas e persistente", "peso": 5, "verificavel": false, "motivo": "exige contrato de API" },
-    { "id": "A06", "descricao": "Filtros por sala, data e usuario", "peso": 3, "verificavel": false, "motivo": "exige contrato de API e rotulos de filtro" },
-    { "id": "A07", "descricao": "Sobreposicao de horarios e rejeitada", "peso": 5, "verificavel": false, "motivo": "exige contrato de API" },
-    { "id": "A08", "descricao": "Dados invalidos sao rejeitados no backend", "peso": 5, "verificavel": false, "motivo": "exige contrato de API e codigos HTTP esperados" },
-    { "id": "A09", "descricao": "Concorrencia nao permite conflito duplo", "peso": 5, "verificavel": false, "motivo": "exige contrato de API e requisicoes simultaneas" },
-    { "id": "A10", "descricao": "Historico registra criacao, edicao e cancelamento", "peso": 3, "verificavel": false, "motivo": "exige contrato de API" }
+    { "id": "A02", "descricao": "Login, logout e protecao de endpoints", "peso": 5, "verificavel": true },
+    { "id": "A03", "descricao": "Usuario comum nao modifica reservas alheias", "peso": 5, "verificavel": true },
+    { "id": "A04", "descricao": "Administrador gerencia salas", "peso": 4, "verificavel": true },
+    { "id": "A05", "descricao": "CRUD de reservas e persistente", "peso": 5, "verificavel": true },
+    { "id": "A06", "descricao": "Filtros por sala, data e usuario", "peso": 3, "verificavel": true },
+    { "id": "A07", "descricao": "Sobreposicao de horarios e rejeitada", "peso": 5, "verificavel": true },
+    { "id": "A08", "descricao": "Dados invalidos sao rejeitados no backend", "peso": 5, "verificavel": true },
+    { "id": "A09", "descricao": "Concorrencia nao permite conflito duplo", "peso": 5, "verificavel": true },
+    { "id": "A10", "descricao": "Historico registra criacao, edicao e cancelamento", "peso": 3, "verificavel": true }
   ]
 }

@@ -1,8 +1,18 @@
 import { test } from '@playwright/test';
-import { avaliar, localstorageTexto, contarOcorrencias, limparStorage, primeiro } from '../../shared/helpers.mjs';
+import {
+  avaliar,
+  localstorageTexto,
+  contarOcorrencias,
+  limparStorage,
+  primeiro,
+  localizarArea,
+  contarItens,
+  aplicarFiltro,
+} from '../../shared/helpers.mjs';
 
 const EMAIL = 'maria.avaliacao@example.com';
 const NOME = 'Maria Avaliacao';
+const TRILHAS = [/intelig[êe]ncia artificial|\bia\b/i, /\bweb\b/i, /seguran[çc]a/i];
 
 async function campoNome(page) {
   return primeiro(page, ['input[name*="nome" i]', 'input[type="text"]', 'input:not([type])']);
@@ -62,6 +72,20 @@ async function enviar(page) {
   await page.waitForTimeout(800);
 }
 
+async function contarPalestras(page) {
+  const sel = 'article, li, [class*="palestra" i], [class*="talk" i], [class*="card" i]';
+  const loc = page.locator(sel);
+  const total = await loc.count();
+  let n = 0;
+  for (let i = 0; i < total; i += 1) {
+    const el = loc.nth(i);
+    if (!(await el.isVisible().catch(() => false))) continue;
+    const t = (await el.innerText().catch(() => '')) || '';
+    if (/\b\d{1,2}[:h]\d{0,2}\b|\bIA\b|\bWeb\b|Seguran/i.test(t)) n += 1;
+  }
+  return n;
+}
+
 test('S01open - projeto abre com conteudo', async ({ page }) => {
   await avaliar('S01_open', async () => {
     await page.goto('/', { waitUntil: 'load' });
@@ -79,6 +103,46 @@ test('S02 - secoes navegaveis e semantica', async ({ page }) => {
     const estruturais = await page.locator('main, nav, header, footer, section, article, h1, h2').count();
     if (links < 1 && estruturais < 2) throw new Error('sem navegacao nem estrutura semantica');
     return `links=${links} estruturais=${estruturais}`;
+  });
+});
+
+test('S03 - lista das seis palestras e trilhas', async ({ page }) => {
+  await avaliar('S03', async () => {
+    await page.goto('/');
+    await page.waitForTimeout(500);
+    const texto = await page.locator('body').innerText();
+    const presentes = TRILHAS.filter((r) => r.test(texto)).length;
+    if (presentes < 3) throw new Error(`apenas ${presentes}/3 trilhas (IA, Web, Seguranca) no texto`);
+    const n = await contarPalestras(page);
+    if (n < 6) throw new Error(`apenas ${n} itens de palestra visiveis (esperado >= 6)`);
+    return `trilhas=3 itens=${n}`;
+  });
+});
+
+test('S04 - filtro de trilhas funciona', async ({ page }) => {
+  await avaliar('S04', async () => {
+    await page.goto('/');
+    await page.waitForTimeout(500);
+    const antes = await contarPalestras(page);
+    const aplicou = await aplicarFiltro(page, 'IA');
+    if (!aplicou) throw new Error('controle de filtro por trilha nao encontrado');
+    const depois = await contarPalestras(page);
+    if (!(depois >= 1 && depois < antes)) {
+      throw new Error(`filtro nao reduziu a lista (antes=${antes}, depois=${depois})`);
+    }
+    return `palestras antes=${antes} depois=${depois}`;
+  });
+});
+
+test('S05 - tres palestrantes apresentados', async ({ page }) => {
+  await avaliar('S05', async () => {
+    await page.goto('/');
+    await page.waitForTimeout(500);
+    const area = await localizarArea(page, ['palestrante', 'speaker']);
+    if (!area) throw new Error('area de palestrantes nao localizada');
+    const n = await contarItens(area);
+    if (n < 3) throw new Error(`apenas ${n} palestrantes na area (esperado >= 3)`);
+    return `palestrantes=${n}`;
   });
 });
 
@@ -107,7 +171,7 @@ test('S07 - formulario rejeita entradas invalidas', async ({ page }) => {
     const blob = await localstorageTexto(page);
     if (blob.includes('invalido')) throw new Error('entrada invalida foi persistida');
     const texto = await page.locator('body').innerText();
-    const erroVisivel = /inv[aá]lido|erro|obrigat[oó]rio|m[ií]nimo|corrija/i.test(texto);
+    const erroVisivel = /inv[aá]lido|erro|obrigat[oó]rio|m[ií]nimo|corrija|v[aá]lido/i.test(texto);
     return erroVisivel ? 'rejeitado com mensagem' : 'rejeitado sem persistir';
   });
 });

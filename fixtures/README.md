@@ -10,8 +10,7 @@ Projetos-base dos três cenários (plano v2, §7.4 e §7.10). Cada um contém ap
 
 ## Versões
 
-- Node.js 22.17.0 (validado no host). Usar a mesma versão na imagem do contêiner.
-- Dependências travadas por `package-lock.json`. Instalar com `npm ci`.
+- Node.js 22.23.3 (a mesma da imagem `tcc-harnesses:v1`). Dependencias travadas por `package-lock.json`; instalar com `npm ci`.
 
 ## SHA-256 dos lockfiles
 
@@ -25,8 +24,8 @@ Recalcular antes de cada coleta. Se o hash mudar, é desvio de protocolo.
 
 ## Decisões
 
-- **SQLite no app-base:** usa `node:sqlite` (embutido no Node 22) em vez de `better-sqlite3`, para evitar compilação nativa dentro do contêiner. Decisão a aprovar pelo pesquisador antes da coleta.
-- **Rede:** nenhuma instalação de pacotes durante a rodada. As dependências vêm pré-instaladas no starter ou na imagem. Política de npm a decidir (§7.10 item 4).
+- **SQLite no app-base:** usa `node:sqlite` (embutido no Node 22) em vez de `better-sqlite3`, para evitar compilação nativa dentro do contêiner. Aprovado pela pesquisadora em 10/10/2026 (ver `protocolo/preregistro.md`).
+- **Rede:** nenhuma instalação de pacotes durante a rodada. As dependências vêm pré-instaladas no starter ou na imagem. Política aprovada em 10/10/2026: o registro npm é liberado apenas no passo de preparo (`npm ci`), antes do isolamento; o agente roda em rede isolada.
 
 ## Verificação
 

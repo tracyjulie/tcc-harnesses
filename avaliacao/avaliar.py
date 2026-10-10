@@ -88,22 +88,39 @@ def build(snapshot, log):
     return executar([npm(), "run", "build"], snapshot, log, timeout=1800) == 0
 
 
+def escolher_start_app(snapshot):
+    """Descobre como iniciar o app: contrato explicito ou script do package.json."""
+    contrato = AVALIACAO / "app" / "contrato.json"
+    if contrato.exists():
+        try:
+            comando = json.loads(contrato.read_text(encoding="utf-8")).get("start_cmd")
+        except (json.JSONDecodeError, OSError):
+            comando = None
+        if comando:
+            return comando
+    scripts = {}
+    try:
+        scripts = json.loads((snapshot / "package.json").read_text(encoding="utf-8")).get("scripts", {})
+    except (json.JSONDecodeError, OSError):
+        scripts = {}
+    for nome in ("dev", "start", "serve", "preview"):
+        if nome in scripts:
+            return [npm(), "run", nome]
+    return [npm(), "run", "dev"]
+
+
 def subir_servidor(snapshot, cenario, log, porta):
     if cenario in ("site", "jogo"):
         comando = [npm(), "run", "dev", "--", "--port", str(porta),
                    "--strictPort", "--host", "127.0.0.1"]
     else:
-        contrato = AVALIACAO / "app" / "contrato.json"
-        comando = None
-        if contrato.exists():
-            comando = json.loads(contrato.read_text(encoding="utf-8")).get("start_cmd")
-        if not comando:
-            comando = [npm(), "run", "dev"]
+        comando = escolher_start_app(snapshot)
     with log.open("ab") as f:
-        f.write(f"\n$ {' '.join(comando)} (servidor)\n".encode())
+        f.write(f"\n$ {' '.join(comando)} (servidor, PORT={porta})\n".encode())
         return subprocess.Popen(
             comando, cwd=str(snapshot), stdout=f, stderr=subprocess.STDOUT,
-            env={**os.environ, "PORT": str(porta)}, start_new_session=True,
+            env={**os.environ, "PORT": str(porta), "HOST": "127.0.0.1"},
+            start_new_session=True,
         )
 
 
@@ -117,6 +134,21 @@ def esperar_servidor(url, segundos=60):
         except Exception:  # noqa: BLE001
             time.sleep(1.5)
     return False
+
+
+def esperar_qualquer(urls, segundos=90):
+    """Devolve a primeira URL que responder dentro do orcamento total."""
+    limite = time.time() + segundos
+    while time.time() < limite:
+        for url in urls:
+            try:
+                with urllib.request.urlopen(url, timeout=2) as resposta:
+                    if resposta.status < 500:
+                        return url
+            except Exception:  # noqa: BLE001
+                pass
+        time.sleep(1.5)
+    return None
 
 
 def rodar_playwright(cenario, log, results_dir, base_url):
@@ -174,8 +206,12 @@ def main():
                           "build aprovado" if ok_build else "build reprovado (ver avaliacao.log)")
 
         servidor = subir_servidor(area, cenario, log, porta)
-        if esperar_servidor(base_url):
-            rodar_playwright(cenario, log, results_dir, base_url)
+        urls = [base_url]
+        if cenario == "app":
+            urls += [f"http://127.0.0.1:{p}" for p in (3000, 5173, 4173, 8080, 8000, 4000)]
+        url_atual = esperar_qualquer(urls)
+        if url_atual:
+            rodar_playwright(cenario, log, results_dir, url_atual)
         else:
             print("servidor nao respondeu; criterios comportamentais ficam null")
     except Exception as e:  # noqa: BLE001

@@ -1,5 +1,5 @@
 {
-  "status": "rascunho - aprovar antes da coleta",
+  "status": "aprovado - 10/10/2026 (congelado antes da coleta)",
   "justificativa": "Proposta derivada do texto de cada prompt (Apendice A do plano v2). Um criterio entra em P1/P2/P3 somente se o texto do prompt pede explicitamente o comportamento ou um equivalente direto. Criterios implicitos (ex.: 'projeto compila', 'semantica adequada') entram apenas quando o prompt os menciona.",
   "mapeamento": {
     "site": {

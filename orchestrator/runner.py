@@ -32,6 +32,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import normalizer  # noqa: E402
+import router_logs  # noqa: E402
 from adapters import HARNESSES, obter as obter_adapter  # noqa: E402
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -47,7 +48,8 @@ PILOTO_CSV = RAIZ / "protocolo" / "compatibilidade-piloto.csv"
 
 CAMPOS_RESULTADOS = [
     "run_id", "etapa", "provider", "runtime_status", "duration_seconds",
-    "input_tokens", "output_tokens", "cached_tokens", "cost_usd", "cost_method",
+    "input_tokens", "output_tokens", "cached_tokens", "reasoning_tokens",
+    "cost_usd", "cost_method",
     "build_success", "tests_passed", "tests_total", "reference_quality",
     "prompt_adherence", "notes",
 ]
@@ -249,6 +251,10 @@ def preparar_home(run_id, harness, dry_run=False, modelo=None, gateway_url=None,
             "$schema": "https://opencode.ai/config.json",
             "tools": {"webfetch": False},
             "provider": {},
+            # Equalizacao dos parametros de inferencia (plano 7.10 item 7):
+            # temperatura 0 e explicitada para o agente de build. O valor
+            # efetivo de raciocinio e lido dos logs do 9router (reasoning_tokens).
+            "agent": {"build": {"temperature": 0}},
         }
         if gateway_url:
             config["provider"]["9router"] = {
@@ -306,6 +312,13 @@ def gravar_manifest(run_id, linha, workspace, prompt_path, args, versoes):
         "cost_limit_usd": args.cost_limit,
         "network_policy": f"isolado ({args.network}); saida apenas para o roteador",
         "npm_deps": args.npm_deps,
+        "inference_params": {
+            "temperature": 0 if linha["harness"] == "opencode" else None,
+            "temperature_aplicada_por": "opencode.json (agent.build)" if linha["harness"] == "opencode" else None,
+            "reasoning_effort": None,
+            "observacao": "temperatura 0 fixada onde o harness permite (OpenCode); "
+                          "raciocinio efetivo registrado por reasoning_tokens do 9router",
+        },
     }
     caminho = RUNS / run_id / "manifest.json"
     if not args.dry_run:
@@ -379,12 +392,14 @@ def classificar_status(res, stderr_texto):
 # --------------------------------------------------------------------------- #
 # Avaliacao independente
 # --------------------------------------------------------------------------- #
-def rodar_avaliador(run_id, cenario, prompt_level):
+def rodar_avaliador(run_id, cenario, prompt_level, args):
     """Roda o avaliador independente sobre o snapshot congelado.
 
-    O avaliador ainda nao existe (ver ESTADO.md). Se `avaliacao/avaliar.py`
-    existir, ele e chamado; senao, os campos de qualidade ficam `null`.
+    Por padrao o avaliador roda em um conteiner a partir da imagem do
+    experimento (Node 22, necessario para o cenario `app`, que usa
+    `node:sqlite`). Com `--evaluator host` roda no Python/Node do host.
     Usa `avaliacao/score.py` sobre o `test-results.json` quando presente.
+    Campos nao observados ficam `null`.
     """
     run_dir = RUNS / run_id
     campos = {
@@ -396,11 +411,28 @@ def rodar_avaliador(run_id, cenario, prompt_level):
     avaliador = AVALIACAO / "avaliar.py"
     if avaliador.exists():
         try:
-            subprocess.run(
-                [sys.executable, str(avaliador), str(run_dir / "source-snapshot"),
-                 cenario, str(run_dir)],
-                capture_output=True, text=True, timeout=1800, check=False,
-            )
+            if getattr(args, "evaluator", "container") == "container":
+                cache = Path.home() / ".cache" / "ms-playwright"
+                cmd = [
+                    "docker", "run", "--rm",
+                    "-v", f"{RAIZ}:/repo",
+                    "-e", "PLAYWRIGHT_BROWSERS_PATH=/evalcache",
+                    "-w", "/repo",
+                ]
+                if cache.exists():
+                    cmd += ["-v", f"{cache}:/evalcache:ro"]
+                cmd += [
+                    args.image, "python3", "/repo/avaliacao/avaliar.py",
+                    f"/repo/runs/{run_id}/source-snapshot", cenario,
+                    f"/repo/runs/{run_id}",
+                ]
+            else:
+                cmd = [
+                    sys.executable, str(avaliador),
+                    str(run_dir / "source-snapshot"), cenario, str(run_dir),
+                ]
+            subprocess.run(cmd, capture_output=True, text=True,
+                           timeout=3600, check=False)
         except Exception as e:  # noqa: BLE001
             print(f"  [avaliador] falhou: {e}")
 
@@ -446,9 +478,16 @@ def processar_linha(linha, args, versoes, tabela_modelos):
     run_id = linha["run_id"]
     run_dir = RUNS / run_id
     resumo_previo = run_dir / "summary.json"
-    if resumo_previo.exists() and not args.force:
-        print(f"[pular] {run_id} (summary.json ja existe; use --force para refazer)")
-        return
+    if resumo_previo.exists():
+        if not args.force:
+            print(f"[pular] {run_id} (summary.json ja existe; use --force para refazer)")
+            return
+        # Nova tentativa: preserva o registro da tentativa original
+        # (plano 7.8, politica de retry).
+        tentativa = 1
+        while (run_dir / f"summary.attempt{tentativa}.json").exists():
+            tentativa += 1
+        resumo_previo.replace(run_dir / f"summary.attempt{tentativa}.json")
 
     run_dir.mkdir(parents=True, exist_ok=True)
     prompt_origem = PROMPTS / f"{linha['cenario']}-p{linha['prompt']}.txt"
@@ -492,7 +531,22 @@ def processar_linha(linha, args, versoes, tabela_modelos):
     runtime_status, motivo = classificar_status(resultado, stderr_texto)
 
     agregado = normalizer.normalizar_run(run_dir)
-    qualidade = rodar_avaliador(run_id, linha["cenario"], linha["prompt"])
+    qualidade = rodar_avaliador(run_id, linha["cenario"], linha["prompt"], args)
+
+    # Custo e uso efetivos pelo ponto unico de instrumentacao (9router).
+    fim = agora_utc()
+    uso_router = router_logs.agregar_janela(
+        manifest["started_at_utc"], fim, linha["provedor"], linha["modelo_id"])
+
+    def _preferir(router_valor, evento_valor):
+        return router_valor if router_valor is not None else evento_valor
+
+    if uso_router["cost_usd"] is not None:
+        cost_method = uso_router["cost_method"]
+    elif agregado["cost_usd"] is not None:
+        cost_method = "estimado pelo harness (eventos)"
+    else:
+        cost_method = None
 
     resumo = {
         "run_id": run_id,
@@ -505,17 +559,21 @@ def processar_linha(linha, args, versoes, tabela_modelos):
         "prompt_level": int(linha["prompt"]),
         "repetition": int(linha["repeticao"]),
         "started_at_utc": manifest["started_at_utc"],
-        "finished_at_utc": agora_utc(),
+        "finished_at_utc": fim,
         "scenario_commit_sha": manifest["scenario_commit_sha"],
         "harness_version": manifest["harness_version"],
         "prompt_sha256": manifest["prompt_sha256"],
         "runtime_status": runtime_status,
         "duration_seconds": resultado["duration_seconds"],
-        "input_tokens": agregado["input_tokens"],
-        "output_tokens": agregado["output_tokens"],
-        "cached_tokens": agregado["cached_tokens"],
-        "cost_usd": agregado["cost_usd"],
-        "cost_method": "medido (metadados do roteador)" if agregado["cost_usd"] is not None else None,
+        "input_tokens": _preferir(uso_router["input_tokens"], agregado["input_tokens"]),
+        "output_tokens": _preferir(uso_router["output_tokens"], agregado["output_tokens"]),
+        "cached_tokens": _preferir(uso_router["cached_tokens"], agregado["cached_tokens"]),
+        "reasoning_tokens": uso_router["reasoning_tokens"],
+        "cost_usd": _preferir(uso_router["cost_usd"], agregado["cost_usd"]),
+        "cost_method": cost_method,
+        "router_requests": uso_router["router_requests"],
+        "router_endpoints": uso_router["router_endpoints"],
+        "provider_models_vistos": uso_router["router_models"],
         "tool_calls": agregado["tool_calls"],
         "test_executions_by_agent": agregado["test_executions_by_agent"],
         "verified_self_corrections": None,
@@ -548,8 +606,10 @@ def selecionar_linhas(args):
         linhas = [l for l in linhas if l["run_id"] == args.run_id]
     if args.etapa:
         linhas = [l for l in linhas if int(l["etapa"]) == args.etapa]
-    if not args.force:
-        linhas = [l for l in linhas if l["status"] in ("planejada", "provider_error", "harness_error", "timeout", "aborted")]
+    if not args.force and not args.run_id:
+        # Sem --force, roda apenas as rodadas ainda nao executadas. Rodadas
+        # com desfecho retentavel sao refeitas com --force (politica de retry).
+        linhas = [l for l in linhas if l["status"] == "planejada"]
     if args.limit:
         linhas = linhas[: args.limit]
     return linhas
@@ -750,6 +810,8 @@ def montar_parser():
     p.add_argument("--router-version", default="9router")
     p.add_argument("--runtime-version", default="Node 22.23.3")
     p.add_argument("--browser-version", default=None)
+    p.add_argument("--evaluator", choices=["container", "host"], default="container",
+                   help="onde roda o avaliador (container Node 22 por padrao)")
     return p
 
 

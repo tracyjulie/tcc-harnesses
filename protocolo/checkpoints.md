@@ -2,6 +2,12 @@
 
 Registro das verificacoes da secao 7 de `MANUAL-RODADAS.md` (plano v2, secao 7.8). Uma secao por verificacao, preenchida antes de iniciar a etapa seguinte.
 
+> Template. So deve ser preenchido apos a coleta de cada etapa. As decisoes de
+> teto/limiar estao congeladas em `protocolo/preregistro.md` (10/10/2026):
+> tempo 20 min/rodada, custo US$ 2/rodada, sucesso = build ok e B >= 50,
+> retry 1. Nada foi coletado ainda (fila em 162 planejadas).
+
+
 ## Verificacao 1 (apos etapa 1, site R1)
 - Data:
 - Consumo observado (tokens e custo, por modelo):
