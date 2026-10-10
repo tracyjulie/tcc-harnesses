@@ -1,0 +1,1 @@
+Desenvolva o site TecnoIF 2026 usando HTML, CSS e TypeScript. O site deve apresentar seis palestras distribuídas entre IA, Web e Segurança, três palestrantes, navegação entre seções e filtro de programação por trilha. Inclua formulário de inscrição com validação de nome, e-mail e palestra escolhida, persistindo os dados no navegador. O layout deve funcionar também no celular.

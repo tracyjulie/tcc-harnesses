@@ -1,0 +1,1 @@
+run_id,etapa,provider,runtime_status,duration_seconds,input_tokens,output_tokens,cached_tokens,cost_usd,cost_method,build_success,tests_passed,tests_total,reference_quality,prompt_adherence,notes

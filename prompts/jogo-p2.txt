@@ -1,0 +1,1 @@
+Desenvolva um jogo de labirinto em TypeScript e Canvas, com tabuleiro 12 × 12. O jogador usa WASD ou setas, precisa coletar três chaves e chegar à saída. Paredes bloqueiam o movimento, inimigos reduzem as três vidas disponíveis e o jogo deve exibir cronômetro e pontuação. Inclua estados de vitória e derrota, pausa, reinício e persistência do recorde no navegador.

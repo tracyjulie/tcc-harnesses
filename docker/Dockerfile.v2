@@ -1,7 +1,0 @@
-FROM tcc-harnesses:v1
-USER root
-COPY docker/requirements.lock /tmp/requirements.lock
-RUN python -m venv /opt/venv \
- && /opt/venv/bin/pip install --no-cache-dir -r /tmp/requirements.lock \
- && chmod -R a+rX /opt/venv
-USER executor

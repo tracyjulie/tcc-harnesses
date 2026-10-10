@@ -1,0 +1,1 @@
+Desenvolva um sistema web para agendamento de salas, com autenticação, diferentes permissões para usuários e administradores, cadastro de salas, gerenciamento de reservas, prevenção de conflitos de horário, filtros de consulta e histórico das alterações. Os dados devem ser persistentes.

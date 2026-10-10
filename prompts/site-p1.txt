@@ -1,0 +1,1 @@
+Desenvolva um site responsivo de divulgação de um evento de tecnologia, com programação filtrável por área, apresentação dos palestrantes e formulário de inscrição com armazenamento local. O site deve ser funcional e visualmente agradável.

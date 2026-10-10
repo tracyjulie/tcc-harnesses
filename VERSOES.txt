@@ -1,4 +1,4 @@
-=== Python ===
+=== Python (orquestrador no host) ===
 Python 3.10.10
 === Claude Code ===
 2.1.197 (Claude Code)
@@ -6,18 +6,18 @@ Python 3.10.10
 codex-cli 0.160.0
 === OpenCode ===
 1.18.34
-=== Docker ===
-Docker version 29.8.2, build 7fc2dff
+=== Docker (verificado em 10/10/2026 no host Windows) ===
+Docker version 28.5.2, build ecc6942
+=== Docker (servidor Ubuntu, maquina de coleta) ===
+<preencher com a saida de docker --version no servidor Linux>
 === Imagem Base ===
 python:3.10.10-slim
-=== Data ===
-02/10/2026
-=== Provedores de inferência (OpenRouter, verificados em 05/10/2026) ===
-openrouter/qwen/qwen3.8-flash           -> alibaba
-openrouter/deepseek/deepseek-v4.1-flash -> alibaba
-openrouter/openai/gpt-6-luna-pro         -> openai
-=== Fixacao de provedor (conta OpenRouter, 08/10/2026) ===
-Provedores permitidos na conta: alibaba, openai (fallback desativado)
 === Imagem do experimento ===
-tcc-harnesses:v2 = tcc-harnesses:v1 + /opt/venv (docker/Dockerfile.v2, lockfile docker/requirements.lock)
-pytest 9.1.1
+tcc-harnesses:v1 (docker/Dockerfile, versoes dos harnesses fixadas)
+=== Provedores de inferencia (OpenRouter, plano v2 secao 7.7) ===
+GPT-6 Luna Pro      -> openai
+Claude Haiku 5.5    -> anthropic
+DeepSeek V4.1 Flash -> relace (provedor oficial DeepSeek inativo na plataforma)
+=== Estado ===
+Provedores fixados manualmente na conta OpenRouter pelo pesquisador (informado em 10/10/2026).
+Slugs e provider_name observado por rodada ainda NAO verificados; confirmar no piloto.

@@ -1,5 +1,5 @@
 === Claude Code ===
-claude --allowedTools "Read,Write,Edit,Bash,Glob,Grep,TodoWrite" --print "SEU_PROMPT_AQUI"
+claude -p "PROMPT" --tools "Read,Write,Edit,Bash,Glob,Grep,TodoWrite" --dangerously-skip-permissions
 
 === Codex ===
 codex exec "SEU_PROMPT_AQUI"

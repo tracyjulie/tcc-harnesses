@@ -1,0 +1,1 @@
+Crie um jogo de labirinto 2D para navegador, com personagem controlado pelo teclado, paredes, chaves coletáveis, inimigos, vidas, cronômetro, pontuação, pausa, reinício e recorde local. O jogador vence ao coletar as chaves e alcançar a saída.

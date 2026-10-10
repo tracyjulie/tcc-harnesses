@@ -12,9 +12,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
 # --- instalacao dos tres harnesses (ajuste para o comando oficial de cada um) ---
-RUN npm install -g @anthropic-ai/claude-code
-RUN npm install -g @openai/codex
-RUN npm install -g opencode-ai
+RUN npm install -g @anthropic-ai/claude-code@2.1.197
+RUN npm install -g @openai/codex@0.160.0
+RUN npm install -g opencode-ai@1.18.34
 
 # usuario nao-root, HOME descartavel (ver Passo 6)
 RUN useradd -m executor
