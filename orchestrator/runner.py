@@ -602,9 +602,12 @@ def rodar_piloto(args, versoes, tabela_modelos):
         RUNS.mkdir(exist_ok=True)
     resultados = []
 
-    for harness in HARNESSES:
+    harnesses = [args.pilot_harness] if args.pilot_harness else HARNESSES
+    for harness in harnesses:
         adapter = obter_adapter(harness)
         for _, modelo_rotulo, modelo_id, provedor in _MODELOS_PILOTO:
+            if args.pilot_model and args.pilot_model.lower() not in (modelo_id.lower(), modelo_rotulo.lower()):
+                continue
             modelo = resolver_modelo(harness, provedor, modelo_id, tabela_modelos)
             par = f"{adapter.NOME} x {modelo_rotulo}"
             print(f"[piloto] {par} (modelo={modelo})")
@@ -695,6 +698,8 @@ def montar_parser():
     p.add_argument("--run-id", help="executar apenas uma rodada")
     p.add_argument("--limit", type=int, help="limitar o numero de rodadas")
     p.add_argument("--pilot", action="store_true", help="rodar o piloto de compatibilidade")
+    p.add_argument("--pilot-harness", default=None, help="piloto: apenas um harness")
+    p.add_argument("--pilot-model", default=None, help="piloto: apenas um modelo (id ou rotulo)")
     p.add_argument("--force", action="store_true", help="refazer rodadas ja concluidas")
     p.add_argument("--dry-run", action="store_true", help="mostrar comandos sem executar")
     p.add_argument("--image", default="tcc-harnesses:v1")
