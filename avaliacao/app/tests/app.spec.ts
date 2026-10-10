@@ -193,12 +193,14 @@ test('A03 - usuario comum nao modifica reservas alheias', async ({ browser }) =>
     await editar.click();
     await page2.waitForTimeout(600);
     const salvar = page2
-      .locator('button:has-text("Salvar"), button[type="submit"]')
+      .locator('button')
+      .filter({ hasText: /salvar|atualiz|confirm/i })
       .first();
-    if (await salvar.count()) {
-      await salvar.click();
-      await page2.waitForTimeout(800);
+    if (!(await salvar.count())) {
+      throw new Error('NAO_OBSERVADO botao de salvar edicao nao encontrado');
     }
+    await salvar.click();
+    await page2.waitForTimeout(800);
     // Se a edicao foi aceita sem erro visivel, considera falha de protecao.
     const texto = (await page2.locator('body').innerText()).toLowerCase();
     const rejeitado = /erro|negad|permiss|proibid|403|alheia|nao autoriz|unauthorized/.test(texto);
@@ -285,6 +287,11 @@ test('A08 - dados invalidos rejeitados no backend', async ({ browser, request })
     await abrirApp(page);
     if (!(await autenticar(page, `inv_${Date.now()}@example.com`))) {
       throw new Error('NAO_OBSERVADO autenticacao indiscoverivel');
+    }
+    try {
+      await criarReserva(page, { sala: '1', inicio: '2033-01-05T10:00', fim: '2033-01-05T11:00' });
+    } catch {
+      throw new Error('NAO_OBSERVADO fluxo de criacao de reserva indiscoverivel');
     }
     const alvo = coletor.find((c) => c.metodo === 'POST' && c.corpo && /reserv/i.test(c.url));
     if (!alvo) throw new Error('NAO_OBSERVADO rota de criacao de reserva nao observada na rede');
