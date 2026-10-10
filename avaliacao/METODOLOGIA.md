@@ -9,7 +9,8 @@ pesquisadora (o guia do orientador e o plano v2 silenciam nestes pontos).
 Os testes verificam **comportamento observavel** (plano 7.10 item 10; guia
 secao 08) e **nao dependem de nomes internos de classes, arquivos ou rotas**
 que o enunciado nao exige. Um criterio aprovado vale 1; reprovado vale 0;
-**nao observado vale `null`** e sai do denominador (nunca vira zero).
+**nao observado vale `null`** (marcador `NAO_OBSERVADO`) e sai do denominador,
+nunca vira zero.
 
 O avaliador roda em um contêiner a partir da imagem `tcc-harnesses:v1`
 (Node 22.23.3), com o repositorio e o cache de browsers do host montados. O
@@ -27,38 +28,38 @@ cenario `app` usa `node:sqlite`, que exige Node 22.
 **Nota sobre Vitest.** Os starters/planos citam testes unitarios com Vitest.
 Como o enunciado nao fixa caminhos nem assinaturas de modulos, testes
 unitarios por importacao direta dependeriam de convencoes nao exigidas e
-introduziriam vies. A verificacao de regras/estado e feita por E2E; o requisito
-de testabilidade do J-P3 e honrado por E2E determinada. Desvio registrado.
+introduziriam vies. A verificacao de regras/estado e feita por E2E. Desvio
+registrado.
 
 ## Criterios por cenario
 
 ### Site (S01-S10)
-Comportamento observado no DOM/localStorage. Heuristicas tolerantes:
+Comportamento observado no DOM/localStorage, com heuristicas tolerantes:
 - S03 exige as tres trilhas (IA/Web/Seguranca) no texto e >= 6 itens de
-  palestra visiveis (elementos `article/li`/classe de card/palestra que
-  contenham horario, "IA", "Web" ou "Seguranca").
+  palestra visiveis (elementos com horario/trilha).
 - S04 exige um controle de filtro por trilha e que a contagem de palestras
   visiveis diminua ao aplica-lo (mantendo >= 1).
 
 ### Jogo (J01-J10)
 O mapa e determinista, mas o enunciado **nao fixa o layout nem a interface**.
-Por isso os criterios de estado sao avaliados por **proxies observaveis**
-(canvas + texto da pagina + localStorage) e identificados como `(proxy)`:
-- J03: movimento repetido contra a borda/parede estabiliza o quadro.
-- J04: interface/`localStorage` declaram chaves e o quadro responde.
-- J05/J06: interface declara saida/chaves e vidas numericas.
-- J07: texto ou quadro evolui em 1,5 s (cronometro/animacao).
-- J09: reinicio aproxima o quadro do estado inicial.
-- J10: interface/`localStorage` expoem recorde.
-Estes proxies sao conservadores e devem ser validados contra uma
-implementacao de referencia antes da coleta definitiva.
+A suite **descobre um objeto de estado do jogo em `window`** (ex.:
+`window.__labirinto` com `jogador`, `chaves`, `vidas`, `pontos`, `tempo`,
+`estado`, `saidaLiberada`, `recorde`, `posicoesChaves`):
+- J01/J02: canvas desenha; movimento (por estado ou, na ausencia, por quadro).
+- J03/J04/J05/J06/J09: verificados no estado (bloqueio, coleta, saida
+  liberada, vidas, reinicio). **Sem estado, viram `null`.**
+- J07: cronometro/pontuacao evolui (estado ou texto).
+- J08: pausa congela jogador e tempo (estado ou quadro).
+- J10: recorde persiste (estado/localStorage apos recarga).
+A convencao do objeto de estado e uma **expectativa do instrumento**; sem ela,
+os criterios de estado sao reportados como nao observados. A ratificar.
 
 ### App (A01-A10)
 Rotas e credenciais **nao** sao fixadas. O avaliador:
 1. sobe o app descobrindo o script (`dev/start/serve/preview`) no
    `package.json` e testando portas comuns, passando `PORT`;
 2. autentica por **registro ou login descobertos** na interface (e-mail unico
-   por execucao);
+   por execucao; segundo usuario em contexto de navegador separado);
 3. para A08/A09, **observa as rotas de API** usadas pela propria aplicacao e
    as reusa (`POST`) para enviar dados invalidos e duas requisicoes
    simultaneas.
@@ -75,10 +76,16 @@ criterio (0 se alguma parte falha, 1 se todas passam, null se nenhuma parte);
 - **B (qualidade de referencia):** todos os criterios, ponderados;
 - **A (aderencia):** so os criterios do `mapeamento-criterio-prompt.json`.
 
+## Status da validacao (10/10/2026)
+
+Suites executadas contra implementacoes de referencia em `avaliacao/_referencia/`
+(fora dos starters, fora do alcance do agente), no contêiner Node 22:
+**site 10/10, jogo 10/10, app 10/10.** Correcoes decorrentes: `vite-env.d.ts`
+nos starters, normalizacao de booleanos no `collect.mjs`, libs do Chromium na
+imagem, e pinagem das dependencias do avaliador por lockfile.
+
 ## Limitacoes declaradas
 
-- Proxies do jogo e descoberta do app podem produzir `null` ou falso
-  negativo; o `n` real por criterio e reportado e o `n` nao observado entra na
-  analise de sensibilidade (plano 9, item 8).
-- O instrumento deve ser validado contra implementacoes de referencia antes do
-  congelamento final e do reinicio do piloto (P9).
+- O objeto de estado do jogo e as rotas descobertas do app podem produzir
+  `null` ou falso negativo em solucoes muito distintas das referencias; o `n`
+  real por criterio e reportado e entra na analise de sensibilidade.

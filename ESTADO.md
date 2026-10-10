@@ -57,16 +57,33 @@ Ultima atualizacao: 10/10/2026. O commit deste arquivo e o estado canonico
 9. **Doc** - `ESTADO.md`, `MANUAL-RODADAS.md`, `README.md`, `VERSOES.txt`,
    starters e `modelos.json` atualizados.
 
+## Validacao do instrumento (10/10/2026)
+
+As suites foram executadas contra **implementacoes de referencia** em
+`avaliacao/_referencia/` (fora dos starters, fora do alcance do agente), no
+conteiner Node 22. Resultado: **site 10/10, jogo 10/10, app 10/10**.
+
+Falhas reais encontradas e corrigidas durante a validacao:
+- starters sem `src/vite-env.d.ts` (importar CSS quebrava o `tsc`) -> adicionado;
+- `collect.mjs` ignorava as partes de build (boolean `true/false` vs `1/0`) -> normalizado;
+- imagem sem as libs do Chromium -> adicionadas e imagem reconstruida;
+- deps do avaliador desatualizadas -> pinadas por `avaliacao/*/package-lock.json`.
+
+Convencoes do instrumento (a ratificar):
+- **jogo:** descoberta de um objeto de estado em `window` (ex.: `window.__labirinto`);
+  sem ele, J03/J04/J05/J06/J09 ficam `null` (`NAO_OBSERVADO`);
+- **app:** descoberta de rotas/autenticacao pela interface e rede, sem fixar rotas.
+
 ## O que permanece pendente
 
-1. **Validar o instrumento contra implementacoes de referencia.** As suites de
-   site/jogo/app ainda nao foram executadas contra uma solucao real. Os proxies
-   do jogo e a descoberta do app exigem essa validacao antes da coleta.
-2. **P9** - Refazer o piloto com o avaliador completo (gasta credito).
-3. **Ratificar** ou nao a alternativa de contrato explicito do app
-   (`avaliacao/app/contrato.json`).
-4. **Entrega do dicionario de dados** (`dados/dicionario-de-dados.md`) e do
-   esqueleto de `analise/`.
+1. **P9** - Refazer o piloto de compatibilidade com o runner/avaliador atualizados
+   (gasta credito; requer OK da pesquisadora).
+2. **Publicar no GitHub** - a ultima sessao nao conseguiu `git push` (credencial
+   expirada). Os commits estao no repo local do Windows e no servidor (via bundle),
+   mas ainda **nao estao em `origin/main`**. Rodar `git push` apos reautenticar.
+3. **Ratificar** o contrato do app e a convencao de estado do jogo
+   (`avaliacao/METODOLOGIA.md`).
+4. **Iniciar a Etapa 1** - somente apos P9 aprovado e protocolo congelado.
 
 ## Como reproduzir o que existe
 

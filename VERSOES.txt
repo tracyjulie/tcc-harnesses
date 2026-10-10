@@ -33,12 +33,16 @@ tcc-harnesses:v1 (docker/Dockerfile)
   Base: python:3.10.10-slim
   Node: v22.23.3 (npm 10.9.9)
   Harnesses: claude-code 2.1.197, codex 0.160.0, opencode 1.18.34
-  id da imagem (10/10/2026): 6da2ef8ed08d
+  Inclui libs de sistema do Chromium (para o avaliador Playwright).
+  id da imagem (10/10/2026): 16c0d026d1c7
 Observacao: uma imagem orfa `tcc-harnesses:v2` (Node 20, versoes sem pino,
 venv com requirements.lock inexistente) foi removida em 10/10/2026.
+A imagem foi reconstruida em 10/10/2026 para incluir as libs do Chromium; o id
+anterior (6da2ef8ed08d) nao contem essas libs.
 
 === Avaliador ===
 Playwright 1.64.0 (Chromium 1248 / chromium_headless_shell 1248), Vitest 3.2.4.
+Dependencias do avaliador pinadas por `avaliacao/<cenario>/package-lock.json`.
 DECISAO (10/10/2026): o avaliador roda em um conteiner a partir de
 `tcc-harnesses:v1` (Node 22.23.3), com o repositorio e o cache de browsers do
 host montados. Motivo: o cenario `app` usa `node:sqlite` (Node 22), e o Node do
