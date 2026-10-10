@@ -427,6 +427,15 @@ def rodar_avaliador(run_id, cenario, prompt_level):
         criterios = dados.get("criterios", [])
         campos["tests_total"] = len(criterios)
         campos["tests_passed"] = sum(1 for c in criterios if c.get("passou") == 1)
+
+    mapa_build = {"site": "S01", "jogo": "J01", "app": "A01"}
+    parte_build = run_dir / "avaliacao-resultados" / f"{mapa_build[cenario]}_build.json"
+    if parte_build.exists():
+        try:
+            campos["build_success"] = bool(
+                json.loads(parte_build.read_text(encoding="utf-8")).get("passou"))
+        except (json.JSONDecodeError, OSError):
+            campos["build_success"] = None
     return campos
 
 

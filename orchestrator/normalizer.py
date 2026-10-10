@@ -35,7 +35,7 @@ CAMPOS_COMUNS = (
 # Nomes de chave observados em respostas de modelos para uso e custo.
 CHAVES_ENTRADA = ("input_tokens", "prompt_tokens", "inputTokenCount")
 CHAVES_SAIDA = ("output_tokens", "completion_tokens", "outputTokenCount")
-CHAVES_CACHE = ("cache_read_input_tokens", "cached_tokens", "cache_read_tokens")
+CHAVES_CACHE = ("cache_read_input_tokens", "cached_input_tokens", "cached_tokens", "cache_read_tokens")
 CHAVES_CUSTO = ("total_cost_usd", "cost_usd", "cost")
 
 NOMES_FERRAMENTA_EDICAO = {"edit", "write", "multiedit", "apply_patch", "patch"}
@@ -81,7 +81,24 @@ def extrair_uso(raw):
     }
 
 
-def _ferramenta(raw):
+def extrair_uso_opencode(raw):
+    """Uso dos eventos do OpenCode (part.tokens no step_finish)."""
+    part = raw.get("part") if isinstance(raw, dict) else None
+    tokens = part.get("tokens") if isinstance(part, dict) else None
+    if not isinstance(tokens, dict):
+        return None
+    if tokens.get("input") is None and tokens.get("output") is None:
+        return None
+    cache = tokens.get("cache") if isinstance(tokens.get("cache"), dict) else {}
+    return {
+        "input_tokens": tokens.get("input"),
+        "output_tokens": tokens.get("output"),
+        "cached_tokens": cache.get("read"),
+        "cost_usd": part.get("cost"),
+    }
+
+
+def _ferramenta(raw, harness=None):
     """Detecta uma chamada de ferramenta e classifica edicao/comando."""
     if not isinstance(raw, dict):
         return None, None, None
@@ -89,23 +106,30 @@ def _ferramenta(raw):
     nome = None
     entrada = None
 
-    bloco = raw.get("tool_use") or raw.get("tool") or raw.get("tool_call")
-    if isinstance(bloco, dict):
-        nome = bloco.get("name") or bloco.get("tool")
-        entrada = bloco.get("input") or bloco.get("arguments") or bloco.get("args")
+    if harness == "opencode":
+        part = raw.get("part")
+        if isinstance(part, dict) and part.get("type") == "tool":
+            nome = part.get("tool")
+            estado = part.get("state")
+            entrada = estado.get("input") if isinstance(estado, dict) else None
+    else:
+        bloco = raw.get("tool_use") or raw.get("tool") or raw.get("tool_call")
+        if isinstance(bloco, dict):
+            nome = bloco.get("name") or bloco.get("tool")
+            entrada = bloco.get("input") or bloco.get("arguments") or bloco.get("args")
 
-    if nome is None and isinstance(raw.get("message"), dict):
-        conteudo = raw["message"].get("content")
-        if isinstance(conteudo, list):
-            for item in conteudo:
-                if isinstance(item, dict) and item.get("type") == "tool_use":
-                    nome = item.get("name")
-                    entrada = item.get("input")
-                    break
+        if nome is None and isinstance(raw.get("message"), dict):
+            conteudo = raw["message"].get("content")
+            if isinstance(conteudo, list):
+                for item in conteudo:
+                    if isinstance(item, dict) and item.get("type") == "tool_use":
+                        nome = item.get("name")
+                        entrada = item.get("input")
+                        break
 
-    if nome is None and raw.get("type") in ("tool_use", "tool_call", "tool"):
-        nome = raw.get("name")
-        entrada = raw.get("input") or raw.get("arguments")
+        if nome is None and raw.get("type") in ("tool_use", "tool_call", "tool"):
+            nome = raw.get("name")
+            entrada = raw.get("input") or raw.get("arguments")
 
     if not isinstance(nome, str):
         return None, None, None
@@ -120,6 +144,7 @@ def _ferramenta(raw):
         if isinstance(entrada, dict):
             caminho = (
                 entrada.get("file_path")
+                or entrada.get("filePath")
                 or entrada.get("path")
                 or entrada.get("filename")
             )
@@ -148,20 +173,23 @@ def _run_finished(raw):
     return None
 
 
-def normalizar_evento(raw):
+def normalizar_evento(raw, harness=None):
     """Converte um evento bruto no dicionario de campos comuns."""
     comum = _vazio()
-    tool_call, file_change, command_execution = _ferramenta(raw)
+    tool_call, file_change, command_execution = _ferramenta(raw, harness)
     comum["tool_call"] = tool_call
     comum["file_change"] = file_change
     comum["command_execution"] = command_execution
-    comum["usage"] = extrair_uso(raw)
+    if harness == "opencode":
+        comum["usage"] = extrair_uso_opencode(raw) or extrair_uso(raw)
+    else:
+        comum["usage"] = extrair_uso(raw)
     comum["run_finished"] = _run_finished(raw)
     comum["raw"] = raw
     return comum
 
 
-def normalizar_arquivo(events_path, saida_path):
+def normalizar_arquivo(events_path, saida_path, harness=None):
     """Normaliza um events.jsonl preservando os brutos; devolve a lista."""
     eventos = []
     linhas_invalidas = 0
@@ -176,7 +204,7 @@ def normalizar_arquivo(events_path, saida_path):
                 except json.JSONDecodeError:
                     linhas_invalidas += 1
                     continue
-                eventos.append(normalizar_evento(raw))
+                eventos.append(normalizar_evento(raw, harness))
 
     with saida_path.open("w", encoding="utf-8") as f:
         for evento in eventos:
@@ -230,7 +258,14 @@ def normalizar_run(run_dir):
     """Normaliza uma pasta de rodada e devolve o agregado (ou None)."""
     events_path = run_dir / "events.jsonl"
     saida_path = run_dir / "normalizados.jsonl"
-    eventos, invalidas = normalizar_arquivo(events_path, saida_path)
+    harness = None
+    manifest = run_dir / "manifest.json"
+    if manifest.exists():
+        try:
+            harness = json.loads(manifest.read_text(encoding="utf-8")).get("harness")
+        except (json.JSONDecodeError, OSError):
+            harness = None
+    eventos, invalidas = normalizar_arquivo(events_path, saida_path, harness)
     agregado = agregar(eventos)
     agregado["eventos_lidos"] = len(eventos)
     agregado["linhas_invalidas"] = invalidas
