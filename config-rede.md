@@ -32,3 +32,18 @@ OpenCode
 
 Codex
   Protocolo: wire_api="responses" (versoes atuais nao aceitam "chat"); o 9router precisa expor /v1/responses.
+
+=== Flags confirmadas com --help (10/10/2026, imagem tcc-harnesses:v1) ===
+Claude Code 2.1.197: -p/--print, --model, --tools <tools...>, --output-format stream-json,
+  --dangerously-skip-permissions, --allowedTools/--disallowedTools.
+Codex 0.160.0: exec, --json (JSONL), -m/--model, -s/--sandbox, -C/--cd,
+  --skip-git-repo-check, --dangerously-bypass-approvals-and-sandbox.
+OpenCode 1.18.34: run, -m/--model (provider/model), --format json, --auto,
+  -c/--continue, -s/--session, --pure, --agent.
+
+Comandos efetivos usados pelo orquestrador (orchestrator/adapters/):
+  claude -p "$(cat prompt.txt)" --model "M" --tools "Read,Write,Edit,Bash,Glob,Grep,TodoWrite" --dangerously-skip-permissions --output-format stream-json
+  codex exec --json --model "M" --skip-git-repo-check --dangerously-bypass-approvals-and-sandbox - < prompt.txt
+  opencode run --model "P/M" --format json --auto "$(cat prompt.txt)"
+
+Nota: a autonomia foi equalizada (Claude --dangerously-skip-permissions, Codex bypass, OpenCode --auto), conforme a secao 7.10 item 5. O workspace nao tem .git, por isso o --skip-git-repo-check no Codex.

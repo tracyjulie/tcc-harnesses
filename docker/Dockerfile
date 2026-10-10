@@ -8,7 +8,7 @@ RUN echo "deb http://archive.debian.org/debian bullseye main" > /etc/apt/sources
     rm -rf /var/lib/apt/lists/*
 
 # instala o gerenciador de pacotes Node, necessario para alguns harnesses de CLI
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs
 
 # --- instalacao dos tres harnesses (ajuste para o comando oficial de cada um) ---

@@ -9,4 +9,4 @@ NOME = "OpenCode"
 
 def build_command(model):
     """Comando executado dentro do container, com cwd no workspace."""
-    return f'opencode run --model "{model}" --format json "$(cat prompt.txt)"'
+    return f'opencode run --model "{model}" --format json --auto "$(cat prompt.txt)"'
