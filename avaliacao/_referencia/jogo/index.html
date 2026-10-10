@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Labirinto Explorer</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <h1>Labirinto Explorer</h1>
+    <div id="hud">
+      <span id="hud-vidas">Vidas: 3</span>
+      <span id="hud-chaves">Chaves: 0/3</span>
+      <span id="hud-pontos">Pontos: 0</span>
+      <span id="hud-tempo">Tempo: 0s</span>
+      <span id="hud-recorde">Recorde: 0</span>
+    </div>
+    <canvas id="game" width="480" height="480"></canvas>
+    <p class="ajuda">Setas/WASD para mover · P para pausar · R para reiniciar</p>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
