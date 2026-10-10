@@ -2,23 +2,23 @@ type Pos = { x: number; y: number };
 
 const MAPA = [
   "############",
-  "#P....#...E#",
-  "#.###.#.##.#",
-  "#...#...#..#",
-  "#.#.#####..#",
-  "#.#.....#K.#",
-  "#.#####.#..#",
-  "#.#..E#.#..#",
-  "#.#.#.#.#..#",
-  "#...#...#.S#",
-  "#.K.K.#....#",
+  "#........E.#",
+  "#..P.......#",
+  "#...#..#...#",
+  "#...#K.#...#",
+  "#...#..#...#",
+  "#...####...#",
+  "#..........#",
+  "#........E.#",
+  "#.........S#",
+  "#.K......K.#",
   "############",
 ];
 
 const LADO = MAPA.length;
 const TAM = 40;
 const TOTAL_CHAVES = 3;
-const INICIO: Pos = { x: 1, y: 1 };
+let inicio: Pos = { x: 3, y: 2 };
 
 const canvas = document.getElementById("game") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
@@ -56,6 +56,7 @@ function carregarMapa(): void {
       if (c === "K") chaves.push({ x, y });
       if (c === "E") inimigos.push({ x, y });
       if (c === "S") saida = { x, y };
+      if (c === "P") inicio = { x, y };
     }
     paredes.push(linha);
   }
@@ -67,7 +68,7 @@ function ehParede(x: number, y: number): boolean {
 
 function reiniciar(): void {
   carregarMapa();
-  jogador = { ...INICIO };
+  jogador = { ...inicio };
   vidas = 3;
   coletadas = 0;
   pontos = 0;
@@ -117,7 +118,7 @@ function moverInimigos(): void {
     if (e.x === jogador.x && e.y === jogador.y && performance.now() > imortalAte) {
       vidas -= 1;
       imortalAte = performance.now() + 1500;
-      jogador = { ...INICIO };
+      jogador = { ...inicio };
       if (vidas <= 0) {
         vidas = 0;
         estado = "derrota";
