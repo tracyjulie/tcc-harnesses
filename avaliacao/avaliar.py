@@ -18,6 +18,8 @@ preservados em `run_dir/avaliacao-resultados/`.
 import json
 import os
 import shutil
+import signal
+import socket
 import subprocess
 import sys
 import time
@@ -26,9 +28,6 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 AVALIACAO = RAIZ / "avaliacao"
-PORTA_PADRAO = 4317
-BASE_URL = f"http://127.0.0.1:{PORTA_PADRAO}"
-
 CENARIOS = {
     "site": "S01",
     "jogo": "J01",
@@ -46,6 +45,12 @@ def npx():
 
 def node():
     return "node.exe" if os.name == "nt" else "node"
+
+
+def escolher_porta():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
 
 
 def executar(comando, cwd, log, timeout=1800, env=None):
@@ -83,23 +88,22 @@ def build(snapshot, log):
     return executar([npm(), "run", "build"], snapshot, log, timeout=1800) == 0
 
 
-def subir_servidor(snapshot, cenario, log):
+def subir_servidor(snapshot, cenario, log, porta):
     if cenario in ("site", "jogo"):
-        comando = [npm(), "run", "dev", "--", "--port", str(PORTA_PADRAO), "--host", "127.0.0.1"]
+        comando = [npm(), "run", "dev", "--", "--port", str(porta),
+                   "--strictPort", "--host", "127.0.0.1"]
     else:
         contrato = AVALIACAO / "app" / "contrato.json"
+        comando = None
         if contrato.exists():
-            dados = json.loads(contrato.read_text(encoding="utf-8"))
-            comando = dados.get("start_cmd")
-        else:
-            comando = None
+            comando = json.loads(contrato.read_text(encoding="utf-8")).get("start_cmd")
         if not comando:
             comando = [npm(), "run", "dev"]
     with log.open("ab") as f:
         f.write(f"\n$ {' '.join(comando)} (servidor)\n".encode())
         return subprocess.Popen(
             comando, cwd=str(snapshot), stdout=f, stderr=subprocess.STDOUT,
-            env={**os.environ, "PORT": str(PORTA_PADRAO)},
+            env={**os.environ, "PORT": str(porta)}, start_new_session=True,
         )
 
 
@@ -115,9 +119,9 @@ def esperar_servidor(url, segundos=60):
     return False
 
 
-def rodar_playwright(cenario, log, results_dir):
+def rodar_playwright(cenario, log, results_dir, base_url):
     ambiente = {
-        "APP_URL": BASE_URL,
+        "APP_URL": base_url,
         "RESULTS_DIR": str(results_dir),
         "PW_REPORT": str(results_dir.parent / "playwright-report.json"),
     }
@@ -159,6 +163,9 @@ def main():
                     ignore=shutil.ignore_patterns("node_modules", "dist", ".git"),
                     dirs_exist_ok=True)
 
+    porta = escolher_porta()
+    base_url = f"http://127.0.0.1:{porta}"
+
     servidor = None
     try:
         ok_build = build(area, log)
@@ -166,20 +173,26 @@ def main():
                           True if ok_build else False,
                           "build aprovado" if ok_build else "build reprovado (ver avaliacao.log)")
 
-        servidor = subir_servidor(area, cenario, log)
-        if esperar_servidor(BASE_URL):
-            rodar_playwright(cenario, log, results_dir)
+        servidor = subir_servidor(area, cenario, log, porta)
+        if esperar_servidor(base_url):
+            rodar_playwright(cenario, log, results_dir, base_url)
         else:
             print("servidor nao respondeu; criterios comportamentais ficam null")
     except Exception as e:  # noqa: BLE001
         print(f"avaliador falhou: {e}")
     finally:
         if servidor is not None:
-            servidor.terminate()
+            try:
+                os.killpg(os.getpgid(servidor.pid), signal.SIGTERM)
+            except Exception:  # noqa: BLE001
+                servidor.terminate()
             try:
                 servidor.wait(timeout=15)
             except Exception:  # noqa: BLE001
-                servidor.kill()
+                try:
+                    os.killpg(os.getpgid(servidor.pid), signal.SIGKILL)
+                except Exception:  # noqa: BLE001
+                    servidor.kill()
 
     if agregar(cenario, log, results_dir, destino):
         print(f"test-results.json gravado em {destino}")
