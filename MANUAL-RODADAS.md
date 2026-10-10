@@ -6,8 +6,8 @@ Procedimento para o piloto e para a coleta definitiva, conforme o plano v2 (§7.
 
 Registrados em `protocolo/preregistro.md`:
 
-- ID exato da rota do GPT-6 Luna Pro no OpenRouter (slug a confirmar no piloto).
-- Provedor por modelo: GPT-6 Luna Pro `openai`, Claude Haiku 5.5 `anthropic`, DeepSeek V4.1 Flash `relace`.
+- ID exato da rota do GPT-6 Luna no OpenRouter (slug a confirmar no piloto).
+- Provedor por modelo: GPT-6 Luna `openai`, Claude Haiku 5.5 `anthropic`, DeepSeek V4.1 Flash `relace`.
 - Teto de tempo e de orçamento por cenário.
 - Limiar de sucesso autônomo e pesos dos critérios (§8.1, §8.3).
 - Política de nova tentativa para `provider_error` e `harness_error`.
@@ -192,7 +192,7 @@ Só então iniciar a etapa seguinte.
 
 ## 9. Pendências antes da primeira rodada real
 
-- Confirmar slugs do GPT-6 Luna Pro e do Claude Haiku 5.5 no OpenRouter, e os provedores efetivos (`VERSOES.txt` ainda não tem essa verificação).
+- Confirmar slugs do GPT-6 Luna e do Claude Haiku 5.5 no OpenRouter, e os provedores efetivos (`VERSOES.txt` ainda não tem essa verificação).
 - Confirmar contra `--help` as flags de Codex e OpenCode citadas em `config-rede.md`.
 - Criar `fixtures/site-base`, `fixtures/jogo-base`, `fixtures/app-base` com commit, lockfile e scripts, sem solução e sem testes de avaliação.
 - Criar `avaliacao/site`, `avaliacao/jogo`, `avaliacao/app` com as suítes congeladas, fora do alcance do agente.

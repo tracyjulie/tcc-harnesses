@@ -1,10 +1,10 @@
 par,harness,modelo,provedor,autentica,le,edita,executa,gera_logs,situacao,observacao,tokens_piloto
-OpenCode x GPT-6 Luna Pro,opencode,GPT-6 Luna Pro,openai,,,,,,,,
+OpenCode x GPT-6 Luna,opencode,GPT-6 Luna,openai,,,,,,,,
 OpenCode x Claude Haiku 5.5,opencode,Claude Haiku 5.5,anthropic,,,,,,,,
 OpenCode x DeepSeek V4.1 Flash,opencode,DeepSeek V4.1 Flash,relace,,,,,,,,
-Codex x GPT-6 Luna Pro,codex,GPT-6 Luna Pro,openai,,,,,,,,
+Codex x GPT-6 Luna,codex,GPT-6 Luna,openai,,,,,,,,
 Codex x Claude Haiku 5.5,codex,Claude Haiku 5.5,anthropic,,,,,,,,
 Codex x DeepSeek V4.1 Flash,codex,DeepSeek V4.1 Flash,relace,,,,,,,,
-Claude Code x GPT-6 Luna Pro,claude-code,GPT-6 Luna Pro,openai,,,,,,,,
+Claude Code x GPT-6 Luna,claude-code,GPT-6 Luna,openai,,,,,,,,
 Claude Code x Claude Haiku 5.5,claude-code,Claude Haiku 5.5,anthropic,,,,,,,,
 Claude Code x DeepSeek V4.1 Flash,claude-code,DeepSeek V4.1 Flash,relace,,,,,,,,

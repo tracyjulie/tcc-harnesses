@@ -4,10 +4,10 @@ Decisoes congeladas antes da etapa 1 (plano v2, secao 7.8). Preencher e datar ca
 
 | Item | Valor | Data | Justificativa |
 |---|---|---|---|
-| Slug GPT-6 Luna Pro no OpenRouter | | | |
+| Slug GPT-6 Luna no OpenRouter | | | |
 | Slug Claude Haiku 5.5 no OpenRouter | | | |
 | Slug DeepSeek V4.1 Flash no OpenRouter | | | |
-| Provedor GPT-6 Luna Pro | openai | | |
+| Provedor GPT-6 Luna | openai | | |
 | Provedor Claude Haiku 5.5 | anthropic | | |
 | Provedor DeepSeek V4.1 Flash | relace | | |
 | Teto de tempo por cenario | | | |

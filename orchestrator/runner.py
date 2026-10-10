@@ -605,7 +605,7 @@ def rodar_piloto(args, versoes, tabela_modelos):
 
 
 _MODELOS_PILOTO = [
-    ("GPT-6 Luna Pro", "LUNAPRO", "gpt-6-luna-pro", "openai"),
+    ("GPT-6 Luna", "LUNA", "gpt-6-luna", "openai"),
     ("Claude Haiku 5.5", "HAIKU", "claude-haiku-5-5", "anthropic"),
     ("DeepSeek V4.1 Flash", "DEEPSEEK", "deepseek-v4.1-flash", "relace"),
 ]

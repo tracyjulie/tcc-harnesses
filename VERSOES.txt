@@ -16,7 +16,7 @@ python:3.10.10-slim
 tcc-harnesses:v1 (docker/Dockerfile, versoes dos harnesses fixadas)
 Node v22.23.3, npm 10.9.9 (reconstruida em 10/10/2026; antes tinha Node 20)
 === Provedores de inferencia (OpenRouter, plano v2 secao 7.7) ===
-GPT-6 Luna Pro      -> openai
+GPT-6 Luna          -> openai
 Claude Haiku 5.5    -> anthropic
 DeepSeek V4.1 Flash -> relace (provedor oficial DeepSeek inativo na plataforma)
 === Estado ===

@@ -12,7 +12,7 @@ Ultima atualizacao: 10/10/2026. Commit em `origin/main`: `5682989`.
 | Fila de 162 execucoes, semente 20261009 | `dados/plano_162_execucoes.csv`, `scripts/gerar_fila.py` | 162 linhas, 6 etapas de 27, IDs unicos |
 | Versoes dos harnesses fixadas | `docker/Dockerfile` | Existem no npm: claude-code 2.1.197, codex 0.160.0, opencode-ai 1.18.34 |
 | Registro de versoes | `VERSOES.txt` | Docker 28.5.2 no host Windows; versao do Ubuntu ainda em branco |
-| Slugs e provedores no OpenRouter | `VERSOES.txt`, `protocolo/preregistro.md` | Modelos existem: `openai/gpt-6-luna-pro`, `anthropic/claude-haiku-5.5`, `deepseek/deepseek-v4.1-flash`. Provedores `openai`, `anthropic` e `relace` aparecem na lista |
+| Slugs e provedores no OpenRouter | `VERSOES.txt`, `protocolo/preregistro.md` | Modelo alvo e `GPT-6 Luna` (`openai/gpt-6-luna`); o 9router atual so lista `openai/gpt-6-luna-pro` (bloqueado por guardrail), a corrigir antes do piloto |
 | Starters site, jogo e app | `fixtures/*-base/` | `npm run build` passou nos tres (exit 0) |
 | Lockfile hashes e versao do Node | `fixtures/README.md` | Node 22.17.0; hashes calculados em 10/10/2026 |
 | Protocolo: pre-registro, checkpoints, piloto, resultados vazios | `protocolo/`, `dados/resultados.csv` | Templates, nao preenchidos |
