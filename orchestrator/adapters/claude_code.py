@@ -17,5 +17,5 @@ def build_command(model):
     return (
         f'claude -p "$(cat prompt.txt)" --model "{model}" '
         f'--tools "{FERRAMENTAS}" '
-        f'--dangerously-skip-permissions --output-format stream-json'
+        f'--verbose --dangerously-skip-permissions --output-format stream-json'
     )

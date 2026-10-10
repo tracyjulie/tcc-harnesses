@@ -1,12 +1,12 @@
 {
-  "_observacao": "Identificador de modelo aceito por cada harness. Chave = harness:provedor:modelo_id. Valor null usa o padrao do runner (opencode: 'provedor/modelo_id'; codex e claude-code: 'modelo_id'). Preencher com o valor exato confirmado no piloto de compatibilidade (secao 7.12) antes da coleta.",
-  "opencode:openai:gpt-6-luna": null,
-  "opencode:anthropic:claude-haiku-5-5": null,
-  "opencode:relace:deepseek-v4.1-flash": null,
-  "codex:openai:gpt-6-luna": null,
-  "codex:anthropic:claude-haiku-5-5": null,
-  "codex:relace:deepseek-v4.1-flash": null,
-  "claude-code:openai:gpt-6-luna": null,
-  "claude-code:anthropic:claude-haiku-5-5": null,
-  "claude-code:relace:deepseek-v4.1-flash": null
+  "_observacao": "Identificador de modelo por harness:provedor:modelo_id. Rotas confirmadas pela lista /v1/models do 9router (10/10/2026). O 9router expoe openrouter/<org>/<slug>; o OpenCode usa o prefixo do provedor 9router. gpt-6-luna ainda nao aparece na lista do 9router (hoje so gpt-6-luna-pro, bloqueado por guardrail).",
+  "opencode:openai:gpt-6-luna": "9router/openrouter/openai/gpt-6-luna",
+  "opencode:anthropic:claude-haiku-5-5": "9router/openrouter/anthropic/claude-haiku-5.5",
+  "opencode:relace:deepseek-v4.1-flash": "9router/openrouter/deepseek/deepseek-v4.1-flash",
+  "codex:openai:gpt-6-luna": "openrouter/openai/gpt-6-luna",
+  "codex:anthropic:claude-haiku-5-5": "openrouter/anthropic/claude-haiku-5.5",
+  "codex:relace:deepseek-v4.1-flash": "openrouter/deepseek/deepseek-v4.1-flash",
+  "claude-code:openai:gpt-6-luna": "openrouter/openai/gpt-6-luna",
+  "claude-code:anthropic:claude-haiku-5-5": "openrouter/anthropic/claude-haiku-5.5",
+  "claude-code:relace:deepseek-v4.1-flash": "openrouter/deepseek/deepseek-v4.1-flash"
 }

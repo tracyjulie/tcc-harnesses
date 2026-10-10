@@ -139,14 +139,48 @@ def carregar_modelos():
     return {}
 
 
+def detectar_gateway(args):
+    """Descobre o endereco do 9router alcancavel pela rede isolada."""
+    if getattr(args, "no_gateway", False):
+        return None
+    host = args.gateway_host
+    if not host:
+        try:
+            host = subprocess.run(
+                ["docker", "network", "inspect", args.network,
+                 "-f", "{{(index .IPAM.Config 0).Gateway}}"],
+                capture_output=True, text=True, check=True).stdout.strip()
+        except Exception:
+            host = None
+    if not host:
+        return None
+    return f"http://{host}:{args.gateway_port}"
+
+
+def ler_chave(args):
+    if getattr(args, "no_gateway", False):
+        return None
+    caminho = Path(args.api_key_file).expanduser()
+    if caminho.exists():
+        return caminho.read_text(encoding="utf-8").strip()
+    return None
+
+
+ORG_ROTA = {"openai": "openai", "anthropic": "anthropic", "relace": "deepseek"}
+
+
 def resolver_modelo(harness, provedor, modelo_id, tabela):
-    """Resolve o identificador aceito pelo harness. Confirmar no piloto."""
+    """Resolve o identificador de modelo aceito pelo harness.
+
+    O 9router expoe os modelos como `openrouter/<org>/<slug>`; o OpenCode usa
+    o prefixo do provedor configurado (`9router/`). Os valores exatos ficam em
+    `orchestrator/modelos.json`, confirmados no piloto.
+    """
     chave = f"{harness}:{provedor}:{modelo_id}"
     if tabela.get(chave):
         return tabela[chave]
-    if harness == "opencode":
-        return f"{provedor}/{modelo_id}"
-    return modelo_id
+    rota = f"openrouter/{ORG_ROTA.get(provedor, provedor)}/{modelo_id}"
+    return f"9router/{rota}" if harness == "opencode" else rota
 
 
 def registrar_resultado(resumo):
@@ -180,22 +214,49 @@ def preparar_workspace(run_id, cenario, dry_run=False):
     return dst
 
 
-def preparar_home(run_id, harness, dry_run=False):
+def preparar_home(run_id, harness, dry_run=False, modelo=None, gateway_url=None, api_key=None):
     home = RUNS / run_id / "home"
     home.mkdir(parents=True, exist_ok=True)
     if dry_run:
         return home
 
     if harness == "opencode":
-        (home / "opencode.json").write_text(json.dumps({
+        modelo_no_provedor = modelo
+        if modelo_no_provedor and modelo_no_provedor.startswith("9router/"):
+            modelo_no_provedor = modelo_no_provedor[len("9router/"):]
+        config = {
             "$schema": "https://opencode.ai/config.json",
             "tools": {"webfetch": False},
-            "websearch": False,
-        }, indent=2), encoding="utf-8")
+            "provider": {},
+        }
+        if gateway_url:
+            config["provider"]["9router"] = {
+                "npm": "@ai-sdk/openai-compatible",
+                "name": "9router",
+                "options": {"baseURL": f"{gateway_url}/v1", "apiKey": api_key or ""},
+                "models": {modelo_no_provedor: {"name": modelo_no_provedor}}
+                if modelo_no_provedor else {},
+            }
+            if modelo:
+                config["model"] = modelo
+        (home / "opencode.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
     elif harness == "codex":
         (home / ".codex").mkdir(exist_ok=True)
+        linhas = ["[tools]", "web_search = false", ""]
+        if gateway_url:
+            linhas += [
+                f'model = "{modelo}"' if modelo else "",
+                'model_provider = "9router"',
+                "",
+                "[model_providers.9router]",
+                'name = "9router"',
+                f'base_url = "{gateway_url}/v1"',
+                'wire_api = "responses"',
+                'env_key = "OPENAI_API_KEY"',
+                "",
+            ]
         (home / ".codex" / "config.toml").write_text(
-            '[tools]\nweb_search = false\n', encoding="utf-8")
+            "\n".join(linhas), encoding="utf-8")
     return home
 
 
@@ -233,15 +294,26 @@ def gravar_manifest(run_id, linha, workspace, prompt_path, args, versoes):
 # Execucao no container
 # --------------------------------------------------------------------------- #
 def montar_docker(args, workspace, home, comando):
-    return [
+    cmd = [
         "docker", "run", "--rm", "--network", args.network,
         "-v", f"{workspace}:/home/executor/trabalho",
         "-v", f"{home}:/home/executor",
         "-e", "HOME=/home/executor",
         "-e", "OPENCODE_CONFIG=/home/executor/opencode.json",
         "-w", "/home/executor/trabalho",
-        args.image, "bash", "-lc", comando,
     ]
+    gateway_url = getattr(args, "gateway_url", None)
+    api_key = getattr(args, "api_key", None)
+    if gateway_url and api_key:
+        cmd += [
+            "-e", f"OPENAI_BASE_URL={gateway_url}/v1",
+            "-e", f"OPENAI_API_KEY={api_key}",
+            "-e", f"ANTHROPIC_BASE_URL={gateway_url}",
+            "-e", f"ANTHROPIC_API_KEY={api_key}",
+            "-e", f"ANTHROPIC_AUTH_TOKEN={api_key}",
+        ]
+    cmd += [args.image, "bash", "-lc", comando]
+    return cmd
 
 
 def executar_no_container(args, workspace, home, comando, run_dir):
@@ -352,8 +424,10 @@ def processar_linha(linha, args, versoes, tabela_modelos):
         print(f"[erro] prompt ausente: {prompt_origem}")
         return
 
+    modelo = resolver_modelo(linha["harness"], linha["provedor"], linha["modelo_id"], tabela_modelos)
     workspace = preparar_workspace(run_id, linha["cenario"], args.dry_run)
-    home = preparar_home(run_id, linha["harness"], args.dry_run)
+    home = preparar_home(run_id, linha["harness"], args.dry_run, modelo,
+                         getattr(args, "gateway_url", None), getattr(args, "api_key", None))
 
     prompt_txt = run_dir / "prompt.txt"
     if not args.dry_run:
@@ -362,7 +436,6 @@ def processar_linha(linha, args, versoes, tabela_modelos):
 
     manifest = gravar_manifest(run_id, linha, workspace, prompt_origem, args, versoes)
 
-    modelo = resolver_modelo(linha["harness"], linha["provedor"], linha["modelo_id"], tabela_modelos)
     adapter = obter_adapter(linha["harness"])
     comando = adapter.build_command(modelo)
 
@@ -509,7 +582,8 @@ def _rodar_piloto_check(args, par_id, harness, modelo, indice, prompt, verificar
     workspace = preparar_workspace_piloto(run_dir / "workspace") if not args.dry_run else run_dir / "workspace"
     if not args.dry_run:
         workspace.mkdir(parents=True, exist_ok=True)
-    home = preparar_home(run_id, harness, args.dry_run)
+    home = preparar_home(run_id, harness, args.dry_run, modelo,
+                         getattr(args, "gateway_url", None), getattr(args, "api_key", None))
     if not args.dry_run:
         (workspace / "prompt.txt").write_text(prompt, encoding="utf-8")
 
@@ -627,15 +701,23 @@ def montar_parser():
     p.add_argument("--time-limit", type=int, default=1200, help="limite em segundos por rodada")
     p.add_argument("--iteration-limit", type=int, default=None)
     p.add_argument("--cost-limit", type=float, default=None, help="limite em USD por rodada")
-    p.add_argument("--gateway", default="9router")
+    p.add_argument("--gateway", default="9router", help="rotulo do roteador (manifest)")
+    p.add_argument("--gateway-host", default=None, help="IP do gateway; padrao: gateway da rede")
+    p.add_argument("--gateway-port", type=int, default=20128)
+    p.add_argument("--api-key-file", default="~/.tcc-segredos/9router.key")
+    p.add_argument("--no-gateway", action="store_true", help="nao injetar base URL/chave do roteador")
     p.add_argument("--router-version", default="9router")
-    p.add_argument("--runtime-version", default="Node 22.17.0")
+    p.add_argument("--runtime-version", default="Node 22.23.3")
     p.add_argument("--browser-version", default=None)
     return p
 
 
 def main():
     args = montar_parser().parse_args()
+    args.gateway_url = detectar_gateway(args)
+    args.api_key = ler_chave(args)
+    if args.gateway_url:
+        print(f"gateway: {args.gateway_url} (chave: {'ok' if args.api_key else 'ausente'})")
     versoes = ler_versoes()
     tabela_modelos = carregar_modelos()
     if args.pilot:
