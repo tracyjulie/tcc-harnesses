@@ -1,24 +1,35 @@
-=== Python (orquestrador no host) ===
-Python 3.10.10
+Observacao: o host Windows e usado apenas para editar o repositorio. A coleta roda
+no servidor Ubuntu; as versoes que valem sao as do servidor e as da imagem.
+
+=== Python (orquestrador) ===
+Host do servidor: 3.14.4 | Alvo do projeto (imagem): 3.10.10
+
 === Claude Code ===
 2.1.197 (Claude Code)
+
 === Codex ===
 codex-cli 0.160.0
+
 === OpenCode ===
 1.18.34
-=== Docker (verificado em 10/10/2026 no host Windows) ===
-Docker version 28.5.2, build ecc6942
-=== Docker (servidor Ubuntu, maquina de coleta) ===
-Docker version 29.8.2, build 7fc2dff (Ubuntu 26.04.1 LTS "resolute")
-=== Imagem Base ===
-python:3.10.10-slim
+
+=== Servidor de coleta ===
+Ubuntu 26.04.1 LTS "resolute" (kernel 7.0.0-38)
+Docker 29.8.2, build 7fc2dff
+
 === Imagem do experimento ===
-tcc-harnesses:v1 (docker/Dockerfile, versoes dos harnesses fixadas)
-Node v22.23.3, npm 10.9.9 (reconstruida em 10/10/2026; antes tinha Node 20)
-=== Provedores de inferencia (OpenRouter, plano v2 secao 7.7) ===
-GPT-6 Luna          -> openai
-Claude Haiku 5.5    -> anthropic
-DeepSeek V4.1 Flash -> relace (provedor oficial DeepSeek inativo na plataforma)
-=== Estado ===
-Provedores fixados manualmente na conta OpenRouter pelo pesquisador (informado em 10/10/2026).
-Slugs e provider_name observado por rodada ainda NAO verificados; confirmar no piloto.
+tcc-harnesses:v1 (docker/Dockerfile)
+  Base: python:3.10.10-slim
+  Node: v22.23.3 (npm 10.9.9)
+
+=== Avaliador ===
+Playwright 1.64.0 (Chromium headless shell)
+
+=== Provedores de inferencia (OpenRouter via 9router) ===
+GPT-6 Luna          -> openai    (rota openrouter/openai/gpt-6-luna)
+Claude Haiku 5.5    -> anthropic (rota openrouter/anthropic/claude-haiku-5.5)
+DeepSeek V4.1 Flash -> relace    (rota openrouter/deepseek/deepseek-v4.1-flash)
+
+=== Estado (10/10/2026) ===
+Rotas confirmadas em http://127.0.0.1:20128/v1/models (9router).
+provider_name efetivo por rodada sera capturado no piloto.
