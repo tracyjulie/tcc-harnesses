@@ -242,7 +242,7 @@ def preparar_home(run_id, harness, dry_run=False, modelo=None, gateway_url=None,
         (home / "opencode.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
     elif harness == "codex":
         (home / ".codex").mkdir(exist_ok=True)
-        linhas = ["[tools]", "web_search = false", ""]
+        linhas = []
         if gateway_url:
             linhas += [
                 f'model = "{modelo}"' if modelo else "",
@@ -255,6 +255,7 @@ def preparar_home(run_id, harness, dry_run=False, modelo=None, gateway_url=None,
                 'env_key = "OPENAI_API_KEY"',
                 "",
             ]
+        linhas += ["[tools]", "web_search = false", ""]
         (home / ".codex" / "config.toml").write_text(
             "\n".join(linhas), encoding="utf-8")
     return home
