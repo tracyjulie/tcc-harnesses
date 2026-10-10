@@ -14,8 +14,9 @@ const pesos = JSON.parse(fs.readFileSync(path.join(raiz, '..', cenario, 'pesos.j
 
 const partesPorCriterio = {};
 for (const arq of fs.readdirSync(resultados)) {
-  if (!arq.endsWith('.json') || arq === 'test-results.json') continue;
+  if (!arq.endsWith('.json') || arq === 'test-results.json' || arq.startsWith('playwright-')) continue;
   const r = JSON.parse(fs.readFileSync(path.join(resultados, arq), 'utf8'));
+  if (!r || typeof r.id !== 'string') continue;
   const base = r.id.split('_')[0];
   (partesPorCriterio[base] ??= []).push(r);
 }

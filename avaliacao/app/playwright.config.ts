@@ -8,7 +8,7 @@ export default defineConfig({
   retries: 0,
   reporter: [
     ['list'],
-    ['json', { outputFile: `${process.env.RESULTS_DIR ?? '.'}/playwright-report.json` }],
+    ['json', { outputFile: process.env.PW_REPORT ?? 'playwright-report.json' }],
   ],
   use: {
     baseURL: process.env.APP_URL ?? 'http://127.0.0.1:4173',

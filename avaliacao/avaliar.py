@@ -116,7 +116,11 @@ def esperar_servidor(url, segundos=60):
 
 
 def rodar_playwright(cenario, log, results_dir):
-    ambiente = {"APP_URL": BASE_URL, "RESULTS_DIR": str(results_dir)}
+    ambiente = {
+        "APP_URL": BASE_URL,
+        "RESULTS_DIR": str(results_dir),
+        "PW_REPORT": str(results_dir.parent / "playwright-report.json"),
+    }
     return executar([npx(), "playwright", "test"], AVALIACAO / cenario, log,
                     timeout=1800, env=ambiente)
 
