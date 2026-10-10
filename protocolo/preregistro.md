@@ -18,6 +18,6 @@ Decisoes congeladas antes da etapa 1 (plano v2, secao 7.8). Preencher e datar ca
 | Limiar de sucesso autonomo (secao 8.3) | | | DECISAO (sugerir com o orientador) |
 | Pesos dos criterios (secao 8.1) | | | DECISAO: `avaliacao/*/pesos.json` hoje e proposta |
 | Politica de nova tentativa (provider_error, harness_error) | | | DECISAO |
-| Plano A ou B (secao 7.12) | | | DECISAO: depende do resultado do piloto |
+| Plano A ou B (secao 7.12) | Nenhum: desenho completo (9/9 pares compativeis) | 10/10/2026 | FATO: piloto de compatibilidade |
 | Politica de rede do npm para os starters | | | DECISAO |
 | Mapeamento criterio x prompt | | | DECISAO: `avaliacao/mapeamento-criterio-prompt.json` hoje e rascunho |

@@ -17,6 +17,7 @@ Ultima atualizacao: 10/10/2026. Commit em `origin/main`: `5682989`.
 | Lockfile hashes e versao do Node | `fixtures/README.md` | Node 22.17.0; hashes calculados em 10/10/2026 |
 | Protocolo: pre-registro, checkpoints, piloto, resultados vazios | `protocolo/`, `dados/resultados.csv` | Templates, nao preenchidos |
 | Manual de rodadas | `MANUAL-RODADAS.md` | Procedimento escrito; nao executado |
+| Piloto de compatibilidade | `protocolo/compatibilidade-piloto.csv` | **9/9 pares compativeis** (10/10/2026), pelo runner |
 
 ## O que esta parcial ou nao verificado
 
@@ -33,12 +34,11 @@ Ultima atualizacao: 10/10/2026. Commit em `origin/main`: `5682989`.
 
 ## Proximos passos, em ordem
 
-1. Adicionar/disponibilizar `openai/gpt-6-luna` no 9router/OpenRouter (hoje so existe `gpt-6-luna-pro`, bloqueado por guardrail) e confirmar o slug.
-2. Rodar o piloto completo dos 9 pares: `python orchestrator/runner.py --pilot`. Registrar em `protocolo/compatibilidade-piloto.csv`.
-3. Aprovar `mapeamento-criterio-prompt.json`, a politica de rede do npm e a decisao de SQLite; congelar o contrato de API do app (`avaliacao/app/contrato.json`).
+1. Decidir os itens restantes do `preregistro.md`: tetos de tempo/custo, limiar de sucesso, politica de retry e **politica de rede do npm** (dependencias do starter).
+2. Aprovar `mapeamento-criterio-prompt.json` e a decisao de SQLite; congelar o contrato de API do app (`avaliacao/app/contrato.json`).
+3. Preparar as dependencias do starter antes da rodada (ex.: `npm ci` num passo com rede) para o agente conseguir buildar no ambiente isolado.
 4. Rodar o avaliador dentro da imagem (Node 22) para o cenario `app`.
-5. Decidir Plano A ou B e preencher `protocolo/preregistro.md`.
-6. Iniciar a etapa 1 (site, R1): `python orchestrator/runner.py --etapa 1`.
+5. Iniciar a etapa 1 (site, R1): `python orchestrator/runner.py --etapa 1`.
 
 **Pendencia de ambiente:** os starters sao copiados sem `node_modules` (ignorado no git). Decidir se as dependencias ficam pre-instaladas na imagem ou se o runner deve rodar `npm ci` antes da rodada (a politica de rede do npm ainda nao foi definida).
 

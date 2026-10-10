@@ -1,10 +1,10 @@
 par,harness,modelo,provedor,autentica,le,edita,executa,gera_logs,situacao,observacao,tokens_piloto
-OpenCode x GPT-6 Luna,opencode,GPT-6 Luna,openai,,,,,,,,
-OpenCode x Claude Haiku 5.5,opencode,Claude Haiku 5.5,anthropic,,,,,,,,
-OpenCode x DeepSeek V4.1 Flash,opencode,DeepSeek V4.1 Flash,relace,,,,,,,,
-Codex x GPT-6 Luna,codex,GPT-6 Luna,openai,,,,,,,,
-Codex x Claude Haiku 5.5,codex,Claude Haiku 5.5,anthropic,,,,,,,,
-Codex x DeepSeek V4.1 Flash,codex,DeepSeek V4.1 Flash,relace,,,,,,,,
-Claude Code x GPT-6 Luna,claude-code,GPT-6 Luna,openai,,,,,,,,
-Claude Code x Claude Haiku 5.5,claude-code,Claude Haiku 5.5,anthropic,,,,,,,,
-Claude Code x DeepSeek V4.1 Flash,claude-code,DeepSeek V4.1 Flash,relace,,,,,,,,
+OpenCode x LUNA,opencode,LUNA,openai,sim,sim,sim,sim,sim,compativel,,
+OpenCode x HAIKU,opencode,HAIKU,anthropic,sim,sim,sim,sim,sim,compativel,,
+OpenCode x DEEPSEEK,opencode,DEEPSEEK,relace,sim,sim,sim,sim,sim,compativel,,
+Codex x LUNA,codex,LUNA,openai,sim,sim,sim,sim,sim,compativel,,input_tokens=28882 output_tokens=687
+Codex x HAIKU,codex,HAIKU,anthropic,sim,sim,sim,sim,sim,compativel,,input_tokens=29101 output_tokens=410
+Codex x DEEPSEEK,codex,DEEPSEEK,relace,sim,sim,sim,sim,sim,compativel,,input_tokens=19820 output_tokens=425
+Claude Code x LUNA,claude-code,LUNA,openai,sim,sim,sim,sim,sim,compativel,,input_tokens=19465 output_tokens=348 cached_tokens=20180
+Claude Code x HAIKU,claude-code,HAIKU,anthropic,sim,sim,sim,sim,sim,compativel,,input_tokens=98839 output_tokens=655 cached_tokens=0
+Claude Code x DEEPSEEK,claude-code,DEEPSEEK,relace,sim,sim,sim,sim,sim,compativel,,input_tokens=16804 output_tokens=540 cached_tokens=16384
