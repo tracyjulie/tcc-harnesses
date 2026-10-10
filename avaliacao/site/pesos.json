@@ -1,0 +1,16 @@
+{
+  "cenario": "site",
+  "fonte": "plano-tcc-harnesses-v2.md secao 8.1 (pesos propostos, a aprovar)",
+  "criterios": [
+    { "id": "S01", "descricao": "Projeto compila e aplicacao abre", "peso": 5, "verificavel": true },
+    { "id": "S02", "descricao": "Secoes navegaveis e semantica adequada", "peso": 2, "verificavel": true },
+    { "id": "S03", "descricao": "Lista das seis palestras e trilhas corretas", "peso": 3, "verificavel": false, "motivo": "conteudo gerado pelo agente sem marcacao unica; contagem exige seletor interno" },
+    { "id": "S04", "descricao": "Filtro de trilhas funciona corretamente", "peso": 4, "verificavel": false, "motivo": "controle de filtro sem rotulo padronizado; exige decisao sobre seletor" },
+    { "id": "S05", "descricao": "Tres palestrantes apresentados", "peso": 2, "verificavel": false, "motivo": "conteudo gerado pelo agente sem marcacao unica" },
+    { "id": "S06", "descricao": "Formulario aceita inscricao valida", "peso": 4, "verificavel": true },
+    { "id": "S07", "descricao": "Formulario rejeita entradas invalidas", "peso": 4, "verificavel": true },
+    { "id": "S08", "descricao": "Inscricoes persistem apos recarga", "peso": 4, "verificavel": true },
+    { "id": "S09", "descricao": "Inscricoes repetidas sao bloqueadas", "peso": 2, "verificavel": true },
+    { "id": "S10", "descricao": "Layout utilizavel em 360/768/1440 px", "peso": 3, "verificavel": true }
+  ]
+}

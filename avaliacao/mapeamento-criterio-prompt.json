@@ -1,0 +1,27 @@
+{
+  "status": "rascunho - aprovar antes da coleta",
+  "justificativa": "Proposta derivada do texto de cada prompt (Apendice A do plano v2). Um criterio entra em P1/P2/P3 somente se o texto do prompt pede explicitamente o comportamento ou um equivalente direto. Criterios implicitos (ex.: 'projeto compila', 'semantica adequada') entram apenas quando o prompt os menciona.",
+  "mapeamento": {
+    "site": {
+      "1": ["S04", "S05", "S06", "S08", "S10"],
+      "2": ["S02", "S03", "S04", "S05", "S06", "S07", "S08", "S10"],
+      "3": ["S01", "S02", "S03", "S04", "S06", "S07", "S08", "S09", "S10"]
+    },
+    "jogo": {
+      "1": ["J02", "J03", "J04", "J05", "J06", "J07", "J08", "J09", "J10"],
+      "2": ["J01", "J02", "J03", "J04", "J05", "J06", "J07", "J08", "J09", "J10"],
+      "3": ["J01", "J02", "J03", "J04", "J05", "J06", "J07", "J08", "J09", "J10"]
+    },
+    "app": {
+      "1": ["A02", "A03", "A04", "A05", "A06", "A07", "A10"],
+      "2": ["A02", "A03", "A04", "A05", "A06", "A07", "A08", "A10"],
+      "3": ["A01", "A02", "A03", "A04", "A05", "A06", "A07", "A08", "A09", "A10"]
+    }
+  },
+  "pontos_para_revisar": [
+    "Site S05 (tres palestrantes) nao aparece no P3; mantido fora de P3 pelo mesmo criterio.",
+    "Jogo: P2 e P3 resultam no mesmo conjunto de criterios; P3 difere apenas em detalhes (pontuacao exata, estado final) que nao estao mapeados por criterio separado.",
+    "App A01 so entra em P3 porque P3 pede 'comandos para iniciar e testar a aplicacao'.",
+    "Site P1 inclui S10 porque o prompt pede 'responsivo', sem larguras especificas."
+  ]
+}

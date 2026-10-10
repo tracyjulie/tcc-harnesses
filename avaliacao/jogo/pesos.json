@@ -1,0 +1,16 @@
+{
+  "cenario": "jogo",
+  "fonte": "plano-tcc-harnesses-v2.md secao 8.1 (pesos propostos, a aprovar)",
+  "criterios": [
+    { "id": "J01", "descricao": "Projeto compila, abre e desenha o tabuleiro", "peso": 5, "verificavel": true },
+    { "id": "J02", "descricao": "Movimento pelas quatro direcoes", "peso": 3, "verificavel": true },
+    { "id": "J03", "descricao": "Paredes impedem deslocamento", "peso": 4, "verificavel": false, "motivo": "exige leitura do estado interno do jogo; so pixels do canvas sao acessiveis" },
+    { "id": "J04", "descricao": "Chaves sao coletadas e contabilizadas", "peso": 4, "verificavel": false, "motivo": "exige leitura do estado interno do jogo" },
+    { "id": "J05", "descricao": "Saida so permite vitoria apos tres chaves", "peso": 5, "verificavel": false, "motivo": "exige forcar estado de vitoria sem contrato de controles" },
+    { "id": "J06", "descricao": "Colisoes com inimigos reduzem vidas", "peso": 4, "verificavel": false, "motivo": "exige leitura do estado interno do jogo" },
+    { "id": "J07", "descricao": "Pontuacao e cronometro evoluem corretamente", "peso": 3, "verificavel": false, "motivo": "so evolucao visivel seria testavel; correcao exige estado interno" },
+    { "id": "J08", "descricao": "Pausa congela tempo e movimentacao", "peso": 4, "verificavel": true },
+    { "id": "J09", "descricao": "Reinicio restaura estado inicial", "peso": 3, "verificavel": false, "motivo": "exige comparar estado inicial com estado apos reinicio via pixels" },
+    { "id": "J10", "descricao": "Recorde persiste entre partidas", "peso": 2, "verificavel": false, "motivo": "exige concluir uma partida sem contrato de controles" }
+  ]
+}
