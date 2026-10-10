@@ -104,11 +104,10 @@ function moverInimigos(): void {
   for (const e of inimigos) {
     const dx = Math.sign(jogador.x - e.x);
     const dy = Math.sign(jogador.y - e.y);
-    const tentativas: Pos[] = [
-      { x: e.x + dx, y: e.y },
-      { x: e.x, y: e.y + dy },
-    ];
-    for (const t of tentativas) {
+    const opcoes: Pos[] = [];
+    if (dx !== 0) opcoes.push({ x: e.x + dx, y: e.y });
+    if (dy !== 0) opcoes.push({ x: e.x, y: e.y + dy });
+    for (const t of opcoes) {
       if (!ehParede(t.x, t.y)) {
         e.x = t.x;
         e.y = t.y;
