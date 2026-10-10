@@ -1,0 +1,55 @@
+# Estado do repositorio
+
+Ultima atualizacao: 10/10/2026. Commits em `origin/main`: `782e06f` e `2a15420`.
+
+## O que esta feito e verificado
+
+| Item | Onde | Verificacao |
+|---|---|---|
+| Nove prompts congelados (Apendice A do plano v2) | `prompts/*.txt` | Extraidos automaticamente do plano |
+| Fila de 162 execucoes, semente 20261009 | `dados/plano_162_execucoes.csv`, `scripts/gerar_fila.py` | 162 linhas, 6 etapas de 27, IDs unicos |
+| Versoes dos harnesses fixadas | `docker/Dockerfile` | Existem no npm: claude-code 2.1.197, codex 0.160.0, opencode-ai 1.18.34 |
+| Registro de versoes | `VERSOES.txt` | Docker 28.5.2 no host Windows; versao do Ubuntu ainda em branco |
+| Slugs e provedores no OpenRouter | `VERSOES.txt`, `protocolo/preregistro.md` | Modelos existem: `openai/gpt-6-luna-pro`, `anthropic/claude-haiku-5.5`, `deepseek/deepseek-v4.1-flash`. Provedores `openai`, `anthropic` e `relace` aparecem na lista |
+| Starters site, jogo e app | `fixtures/*-base/` | `npm run build` passou nos tres (exit 0) |
+| Lockfile hashes e versao do Node | `fixtures/README.md` | Node 22.17.0; hashes calculados em 10/10/2026 |
+| Protocolo: pre-registro, checkpoints, piloto, resultados vazios | `protocolo/`, `dados/resultados.csv` | Templates, nao preenchidos |
+| Manual de rodadas | `MANUAL-RODADAS.md` | Procedimento escrito; nao executado |
+
+## O que esta parcial ou nao verificado
+
+- **`avaliacao/`**: existem pesos (`pesos.json`), `score.py`, `shared/collect.mjs`, `shared/record.mjs` e `package.json` por cenario. Verifiquei apenas a sintaxe e o JSON. **Nao existem testes** (Vitest/Playwright), e nao rodei `score.py` contra nenhum resultado.
+- **`avaliacao/mapeamento-criterio-prompt.json`**: marcado como `rascunho - aprovar antes da coleta`. Precisa de aprovacao do pesquisador.
+- **`orchestrator/`**: vazio. `runner.py` e `normalizer.py` nao foram criados.
+- **Flags dos harnesses** (`config-rede.md`): nao confirmadas com `--help` nas versoes fixadas. A verificacao falhou por erro de credito.
+- **Provedor efetivo por rodada**: nao verificado. So sera confirmado no piloto, pelo `provider_name` do OpenRouter.
+- **Politica de rede do npm** para os starters: nao decidida (§7.10 item 4).
+- **SQLite no app-base**: usa `node:sqlite`, decisao a aprovar.
+- **`VERSOES.txt`**: campo do Docker no Ubuntu ainda em branco.
+
+## Proximos passos, em ordem
+
+1. Criar `orchestrator/runner.py` e `orchestrator/normalizer.py` (Python 3.10, biblioteca padrao).
+2. Rodar `npm --prefix ... --help` ou equivalente para confirmar flags de Claude Code, Codex e OpenCode, e corrigir `config-rede.md`.
+3. Criar testes em `avaliacao/` (Vitest e Playwright) e validar contra um snapshot de teste.
+4. Aprovar `mapeamento-criterio-prompt.json`, a politica de rede do npm e a decisao de SQLite.
+5. Construir a imagem `tcc-harnesses:v1` no Ubuntu, anotar o Docker no `VERSOES.txt`.
+6. Rodar o piloto (`MANUAL-RODADAS.md` secao 2) nos nove pares. Registrar em `protocolo/compatibilidade-piloto.csv`.
+7. Decidir Plano A ou B e preencher `protocolo/preregistro.md`.
+8. Iniciar a etapa 1 (site, R1).
+
+## Como reproduzir o que existe
+
+```
+cd tcc-harnesses
+python scripts/gerar_fila.py              # regenera dados/plano_162_execucoes.csv
+for c in site jogo app; do (cd fixtures/$c-base && npm ci && npm run build); done
+sha256sum fixtures/*-base/package-lock.json
+```
+
+## Creditos
+
+Os erros 402 da sessao vieram do gateway local (`127.0.0.1:20128`, o 9router) ao OpenRouter. Os subagentes usam a mesma cota. Para economizar credito:
+- Nao abrir novos subagentes para tarefas que podem ser feitas direto.
+- Concluir o orquestrador e os testes localmente antes de gastar credito no piloto, que e o primeiro consumo real.
+- Recarregar o OpenRouter antes do piloto. O custo do piloto calibra a projecao da etapa 1 (§7.8).
