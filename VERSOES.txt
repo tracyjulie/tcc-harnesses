@@ -1,0 +1,23 @@
+=== Python ===
+Python 3.10.10
+=== Claude Code ===
+2.1.197 (Claude Code)
+=== Codex ===
+codex-cli 0.160.0
+=== OpenCode ===
+1.18.34
+=== Docker ===
+Docker version 29.8.2, build 7fc2dff
+=== Imagem Base ===
+python:3.10.10-slim
+=== Data ===
+02/10/2026
+=== Provedores de inferência (OpenRouter, verificados em 05/10/2026) ===
+openrouter/qwen/qwen3.8-flash           -> alibaba
+openrouter/deepseek/deepseek-v4.1-flash -> alibaba
+openrouter/openai/gpt-6-luna-pro         -> openai
+=== Fixacao de provedor (conta OpenRouter, 08/10/2026) ===
+Provedores permitidos na conta: alibaba, openai (fallback desativado)
+=== Imagem do experimento ===
+tcc-harnesses:v2 = tcc-harnesses:v1 + /opt/venv (docker/Dockerfile.v2, lockfile docker/requirements.lock)
+pytest 9.1.1

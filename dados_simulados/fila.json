@@ -1,0 +1,1460 @@
+[
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 1,
+  "id": "opencode__qwen__n2_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 2,
+  "id": "claude-code__deepseek__n3_a__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 3,
+  "id": "codex__gpt__n2_b__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 4,
+  "id": "codex__gpt__n3_b__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 5,
+  "id": "codex__qwen__n2_c__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 6,
+  "id": "claude-code__deepseek__n2_a__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 7,
+  "id": "codex__gpt__n3_c__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 8,
+  "id": "claude-code__qwen__n3_c__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 9,
+  "id": "opencode__deepseek__n1_a__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 10,
+  "id": "codex__qwen__n2_a__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 11,
+  "id": "opencode__gpt__n2_c__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 12,
+  "id": "codex__gpt__n2_c__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 13,
+  "id": "codex__deepseek__n1_a__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 14,
+  "id": "opencode__deepseek__n3_b__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 15,
+  "id": "claude-code__gpt__n2_c__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 16,
+  "id": "opencode__deepseek__n1_c__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 17,
+  "id": "opencode__qwen__n1_c__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 18,
+  "id": "codex__deepseek__n3_b__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 19,
+  "id": "opencode__qwen__n2_c__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 20,
+  "id": "codex__qwen__n3_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 21,
+  "id": "claude-code__qwen__n1_b__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 22,
+  "id": "opencode__gpt__n3_a__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 23,
+  "id": "opencode__qwen__n1_b__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 24,
+  "id": "codex__deepseek__n2_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 25,
+  "id": "claude-code__gpt__n1_a__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 26,
+  "id": "opencode__deepseek__n2_c__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 27,
+  "id": "claude-code__gpt__n1_b__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 28,
+  "id": "claude-code__gpt__n1_c__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 29,
+  "id": "opencode__qwen__n2_b__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 30,
+  "id": "opencode__qwen__n3_c__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 31,
+  "id": "codex__gpt__n1_b__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 32,
+  "id": "opencode__qwen__n3_b__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 33,
+  "id": "codex__deepseek__n2_b__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 34,
+  "id": "claude-code__qwen__n3_b__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 35,
+  "id": "opencode__deepseek__n2_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 36,
+  "id": "claude-code__qwen__n1_c__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 37,
+  "id": "claude-code__deepseek__n3_b__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 38,
+  "id": "codex__deepseek__n1_c__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 39,
+  "id": "claude-code__gpt__n2_b__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 40,
+  "id": "codex__deepseek__n3_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 41,
+  "id": "claude-code__gpt__n3_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 42,
+  "id": "claude-code__qwen__n2_c__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 43,
+  "id": "claude-code__qwen__n3_a__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 44,
+  "id": "codex__gpt__n1_c__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 45,
+  "id": "opencode__gpt__n1_c__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 46,
+  "id": "claude-code__deepseek__n1_a__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 47,
+  "id": "opencode__deepseek__n3_c__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 48,
+  "id": "claude-code__gpt__n2_a__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 49,
+  "id": "opencode__deepseek__n2_b__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 50,
+  "id": "opencode__qwen__n3_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 51,
+  "id": "claude-code__deepseek__n1_b__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 52,
+  "id": "codex__gpt__n2_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 53,
+  "id": "claude-code__qwen__n1_a__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 54,
+  "id": "codex__gpt__n3_a__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 55,
+  "id": "opencode__gpt__n2_a__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 56,
+  "id": "codex__deepseek__n1_b__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 57,
+  "id": "opencode__gpt__n2_b__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 58,
+  "id": "opencode__gpt__n3_c__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 59,
+  "id": "claude-code__gpt__n3_c__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 60,
+  "id": "codex__qwen__n3_b__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 61,
+  "id": "codex__deepseek__n3_c__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 62,
+  "id": "codex__deepseek__n2_c__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 63,
+  "id": "codex__gpt__n1_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 64,
+  "id": "claude-code__gpt__n3_b__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 65,
+  "id": "opencode__gpt__n1_b__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 66,
+  "id": "opencode__deepseek__n1_b__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 67,
+  "id": "codex__qwen__n1_c__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 68,
+  "id": "codex__qwen__n1_a__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 69,
+  "id": "opencode__gpt__n1_a__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 70,
+  "id": "opencode__gpt__n3_b__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 71,
+  "id": "claude-code__qwen__n2_b__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 72,
+  "id": "opencode__qwen__n1_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 73,
+  "id": "claude-code__deepseek__n1_c__r1"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 74,
+  "id": "opencode__deepseek__n3_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 75,
+  "id": "claude-code__deepseek__n2_b__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 76,
+  "id": "claude-code__deepseek__n3_c__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 77,
+  "id": "codex__qwen__n1_b__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 1,
+  "ordem": 78,
+  "id": "codex__qwen__n2_b__r1"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 79,
+  "id": "codex__qwen__n3_c__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 1,
+  "ordem": 80,
+  "id": "claude-code__qwen__n2_a__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 1,
+  "ordem": 81,
+  "id": "claude-code__deepseek__n2_c__r1"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 82,
+  "id": "claude-code__gpt__n1_a__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 83,
+  "id": "opencode__gpt__n3_a__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 84,
+  "id": "opencode__qwen__n2_b__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 85,
+  "id": "codex__gpt__n3_b__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 86,
+  "id": "claude-code__gpt__n3_c__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 87,
+  "id": "codex__deepseek__n3_c__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 88,
+  "id": "claude-code__qwen__n3_a__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 89,
+  "id": "claude-code__qwen__n1_b__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 90,
+  "id": "codex__deepseek__n2_a__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 91,
+  "id": "opencode__gpt__n1_b__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 92,
+  "id": "codex__deepseek__n1_c__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 93,
+  "id": "claude-code__deepseek__n1_c__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 94,
+  "id": "codex__deepseek__n3_a__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 95,
+  "id": "codex__gpt__n2_c__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 96,
+  "id": "claude-code__qwen__n1_c__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 97,
+  "id": "opencode__qwen__n3_c__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 98,
+  "id": "codex__gpt__n2_b__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 99,
+  "id": "claude-code__gpt__n2_b__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 100,
+  "id": "codex__qwen__n3_a__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 101,
+  "id": "codex__deepseek__n3_b__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 102,
+  "id": "claude-code__gpt__n3_a__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 103,
+  "id": "codex__deepseek__n1_a__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 104,
+  "id": "claude-code__gpt__n2_a__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 105,
+  "id": "claude-code__qwen__n1_a__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 106,
+  "id": "claude-code__deepseek__n3_c__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 107,
+  "id": "opencode__deepseek__n1_a__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 108,
+  "id": "opencode__gpt__n2_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 109,
+  "id": "opencode__qwen__n2_a__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 110,
+  "id": "claude-code__gpt__n1_b__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 111,
+  "id": "codex__qwen__n2_a__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 112,
+  "id": "claude-code__deepseek__n2_a__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 113,
+  "id": "opencode__deepseek__n3_a__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 114,
+  "id": "codex__gpt__n1_a__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 115,
+  "id": "claude-code__deepseek__n1_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 116,
+  "id": "opencode__qwen__n1_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 117,
+  "id": "opencode__gpt__n1_c__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 118,
+  "id": "claude-code__qwen__n2_a__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 119,
+  "id": "claude-code__qwen__n2_c__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 120,
+  "id": "opencode__qwen__n3_a__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 121,
+  "id": "codex__qwen__n2_c__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 122,
+  "id": "codex__gpt__n3_c__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 123,
+  "id": "claude-code__deepseek__n2_c__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 124,
+  "id": "claude-code__gpt__n2_c__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 125,
+  "id": "opencode__gpt__n2_c__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 126,
+  "id": "codex__gpt__n1_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 127,
+  "id": "opencode__deepseek__n1_b__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 128,
+  "id": "codex__deepseek__n1_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 129,
+  "id": "opencode__deepseek__n2_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 130,
+  "id": "opencode__qwen__n1_a__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 131,
+  "id": "opencode__deepseek__n2_a__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 132,
+  "id": "codex__qwen__n3_c__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 133,
+  "id": "codex__gpt__n1_c__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 134,
+  "id": "claude-code__deepseek__n3_a__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 135,
+  "id": "opencode__deepseek__n1_c__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 136,
+  "id": "claude-code__deepseek__n3_b__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 137,
+  "id": "claude-code__deepseek__n1_a__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 138,
+  "id": "opencode__deepseek__n3_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 139,
+  "id": "opencode__qwen__n3_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 140,
+  "id": "opencode__qwen__n1_c__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 141,
+  "id": "claude-code__gpt__n3_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 142,
+  "id": "opencode__gpt__n3_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 143,
+  "id": "opencode__gpt__n1_a__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 144,
+  "id": "claude-code__deepseek__n2_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 145,
+  "id": "opencode__gpt__n3_c__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 146,
+  "id": "codex__qwen__n1_a__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 147,
+  "id": "claude-code__qwen__n3_c__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 148,
+  "id": "opencode__gpt__n2_a__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n3",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 149,
+  "id": "codex__gpt__n3_a__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 150,
+  "id": "codex__deepseek__n2_b__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 151,
+  "id": "claude-code__qwen__n2_b__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 152,
+  "id": "codex__qwen__n1_c__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 153,
+  "id": "claude-code__qwen__n3_b__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 154,
+  "id": "codex__deepseek__n2_c__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n1",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 155,
+  "id": "codex__qwen__n1_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n3",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 156,
+  "id": "opencode__deepseek__n3_c__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n3",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 157,
+  "id": "codex__qwen__n3_b__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "gpt",
+  "nivel": "n2",
+  "tarefa": "a",
+  "rep": 2,
+  "ordem": 158,
+  "id": "codex__gpt__n2_a__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 159,
+  "id": "opencode__qwen__n2_c__r2"
+ },
+ {
+  "harness": "claude-code",
+  "modelo": "gpt",
+  "nivel": "n1",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 160,
+  "id": "claude-code__gpt__n1_c__r2"
+ },
+ {
+  "harness": "codex",
+  "modelo": "qwen",
+  "nivel": "n2",
+  "tarefa": "b",
+  "rep": 2,
+  "ordem": 161,
+  "id": "codex__qwen__n2_b__r2"
+ },
+ {
+  "harness": "opencode",
+  "modelo": "deepseek",
+  "nivel": "n2",
+  "tarefa": "c",
+  "rep": 2,
+  "ordem": 162,
+  "id": "opencode__deepseek__n2_c__r2"
+ }
+]
