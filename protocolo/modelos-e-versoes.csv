@@ -1,4 +1,4 @@
-modelo_rotulo,modelo_id,provedor,rota_9router,endpoint_thread,data_confirmacao
-LUNA,gpt-6-luna,openai,openrouter/openai/gpt-6-luna,/v1/responses,10/10/2026
-HAIKU,claude-haiku-5-5,anthropic,openrouter/anthropic/claude-haiku-5.5,/v1/responses,10/10/2026
-DEEPSEEK,deepseek-v4.1-flash,relace,openrouter/deepseek/deepseek-v4.1-flash,/v1/responses,10/10/2026
+modelo_rotulo,modelo_id,slug_openrouter,provedor,rota_9router,endpoint_opencode,endpoint_codex,endpoint_claude_code,data_confirmacao
+LUNA,gpt-6-luna,openai/gpt-6-luna,openai,openrouter/openai/gpt-6-luna,/v1/chat/completions,/v1/responses,/v1/messages,12/10/2026
+HAIKU,claude-haiku-5-5,anthropic/claude-haiku-5.5,anthropic,openrouter/anthropic/claude-haiku-5.5,/v1/chat/completions,/v1/responses,/v1/messages,12/10/2026
+DEEPSEEK,deepseek-v4.1-flash,deepseek/deepseek-v4.1-flash,relace,openrouter/deepseek/deepseek-v4.1-flash,/v1/chat/completions,/v1/responses,/v1/messages,12/10/2026

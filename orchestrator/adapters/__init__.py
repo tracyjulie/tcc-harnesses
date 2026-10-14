@@ -6,8 +6,8 @@ a cargo do runner; a conversao dos eventos nativos fica a cargo do
 normalizer. O identificador de modelo (`model`) e resolvido pelo runner.
 
 Os comandos abaixo seguem `MANUAL-RODADAS.md` (secao 2) e `config-rede.md`.
-As flags devem ser reconfirmadas com `--help` das versoes fixadas antes do
-piloto; nenhuma flag foi validada por esta base de codigo.
+As flags foram confirmadas com `--help` das versoes fixadas (ver `VERSOES.txt`);
+reconfirme-as se a imagem for reconstruida.
 """
 
 from . import claude_code, codex, opencode

@@ -2,6 +2,7 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
+  outputDir: process.env.PW_OUTPUT_DIR ?? 'test-results',
   timeout: 45000,
   fullyParallel: false,
   workers: 1,

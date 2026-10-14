@@ -1,6 +1,6 @@
 {
   "cenario": "app",
-  "fonte": "plano-tcc-harnesses-v2.md secao 8.1 (pesos aprovados 10/10/2026)",
+  "fonte": "plano-tcc-harnesses-v2.md secao 8.1 (pesos aprovados 12/10/2026)",
   "criterios": [
     { "id": "A01", "descricao": "Servidor e frontend iniciam sem erro", "peso": 5, "verificavel": true },
     { "id": "A02", "descricao": "Login, logout e protecao de endpoints", "peso": 5, "verificavel": true },

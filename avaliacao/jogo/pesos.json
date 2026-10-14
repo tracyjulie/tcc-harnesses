@@ -1,6 +1,6 @@
 {
   "cenario": "jogo",
-  "fonte": "plano-tcc-harnesses-v2.md secao 8.1 (pesos aprovados 10/10/2026)",
+  "fonte": "plano-tcc-harnesses-v2.md secao 8.1 (pesos aprovados 12/10/2026)",
   "criterios": [
     { "id": "J01", "descricao": "Projeto compila, abre e desenha o tabuleiro", "peso": 5, "verificavel": true },
     { "id": "J02", "descricao": "Movimento pelas quatro direcoes", "peso": 3, "verificavel": true },

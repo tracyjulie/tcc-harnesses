@@ -6,11 +6,12 @@ Converte o JSON nativo de cada harness para os conceitos comuns
 preservando integralmente o evento bruto em `raw`. Campo nao observado
 recebe `null`, nunca zero.
 
-Os esquemas nativos ainda nao foram confirmados contra as versoes fixadas;
-os parsers abaixo sao defensivos e serao validados no piloto de
-compatibilidade (secao 7.12, verificacao 5). A extracao de uso varre o
-evento por nomes de chave conhecidos, de modo a funcionar mesmo que o
-schema mude de posicao.
+Parsers: OpenCode (`part.type == "tool"`), Claude Code (`tool_use` em
+`message.content`) e Codex (`item.completed` com `command_execution` ou
+`file_change`). Os formatos do Codex e do Claude Code devem ser conferidos com
+eventos reais no piloto (veja os testes em orchestrator/tests). A extracao de
+uso varre o evento por nomes de chave conhecidos, de modo a funcionar mesmo
+que o schema mude de posicao.
 
 Uso:
     python orchestrator/normalizer.py <run_id> [...]   # normaliza eventos
@@ -113,6 +114,23 @@ def _ferramenta(raw, harness=None):
             estado = part.get("state")
             entrada = estado.get("input") if isinstance(estado, dict) else None
     else:
+        # Codex (`codex exec --json`): ferramentas aparecem como itens concluidos
+        # {"type":"item.completed","item":{"type":"command_execution"|"file_change"|...}}.
+        # So `item.completed` conta (item.started repetiria a mesma chamada).
+        item = raw.get("item") if isinstance(raw.get("item"), dict) else None
+        if item is not None and raw.get("type") == "item.completed":
+            tipo_item = item.get("type")
+            if tipo_item == "command_execution":
+                nome, entrada = "bash", {"command": item.get("command")}
+            elif tipo_item == "file_change":
+                mudancas = item.get("changes")
+                caminho_item = mudancas[0].get("path") if isinstance(mudancas, list) and mudancas \
+                    and isinstance(mudancas[0], dict) else None
+                nome, entrada = "edit", {"path": caminho_item}
+            elif tipo_item in ("mcp_tool_call", "web_search"):
+                nome, entrada = tipo_item, item.get("arguments") or item.get("query")
+
+    if nome is None and harness != "opencode":
         bloco = raw.get("tool_use") or raw.get("tool") or raw.get("tool_call")
         if isinstance(bloco, dict):
             nome = bloco.get("name") or bloco.get("tool")

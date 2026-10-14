@@ -1,7 +1,7 @@
 # Metodologia do instrumento de avaliacao
 
 Documento de apoio ao avaliador independente (`avaliacao/`). Registra as
-decisoes de instrumentacao congeladas em 10/10/2026, aprovadas pela
+decisoes de instrumentacao (registro de 12/10/2026), aprovadas pela
 pesquisadora (o guia do orientador e o plano v2 silenciam nestes pontos).
 
 ## Principio
@@ -13,7 +13,8 @@ que o enunciado nao exige. Um criterio aprovado vale 1; reprovado vale 0;
 nunca vira zero.
 
 O avaliador roda em um contêiner a partir da imagem `tcc-harnesses:v1`
-(Node 22.23.3), com o repositorio e o cache de browsers do host montados. O
+(Node 22.23.3), com o repositorio montado SOMENTE LEITURA (so a pasta da propria
+rodada e gravavel) e o cache de browsers do host montado somente leitura. O
 cenario `app` usa `node:sqlite`, que exige Node 22.
 
 ## Niveis de teste
@@ -76,7 +77,7 @@ criterio (0 se alguma parte falha, 1 se todas passam, null se nenhuma parte);
 - **B (qualidade de referencia):** todos os criterios, ponderados;
 - **A (aderencia):** so os criterios do `mapeamento-criterio-prompt.json`.
 
-## Status da validacao (10/10/2026)
+## Status da validacao (12/10/2026)
 
 Suites executadas contra implementacoes de referencia em `avaliacao/_referencia/`
 (fora dos starters, fora do alcance do agente), no contêiner Node 22:
@@ -89,3 +90,15 @@ imagem, e pinagem das dependencias do avaliador por lockfile.
 - O objeto de estado do jogo e as rotas descobertas do app podem produzir
   `null` ou falso negativo em solucoes muito distintas das referencias; o `n`
   real por criterio e reportado e entra na analise de sensibilidade.
+- No jogo, 5 criterios (J03, J04, J05, J06 e J09; 20 dos 37 pontos de peso)
+  dependem do objeto de estado. Sem ele, a nota "observada" (B) e calculada so
+  sobre os outros criterios. Por isso o `summary.json` e o `resultados.csv`
+  gravam sempre as duas notas (`reference_quality` e
+  `reference_quality_conservadora`, com nao observado = 0) e a contagem
+  `criterios_nao_observados`; a taxa de nulos por celula deve ser reportada.
+- Controle negativo: o starter vazio nao pode pontuar. O criterio S10 (layout
+  em 360/768/1440 px) agora exige conteudo minimo na pagina (antes uma pagina
+  vazia passava por nao ter transbordo horizontal). Repita o controle para o
+  jogo e o app (`MANUAL-RODADAS.md` / plano de validacao) antes da coleta.
+- Dependencias: se `npm ci` falhar no snapshot, o avaliador tenta `npm install`
+  e registra o fato em `avaliacao-resultados/DEPS_FALLBACK.json`.

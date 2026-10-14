@@ -24,8 +24,8 @@ Recalcular antes de cada coleta. Se o hash mudar, é desvio de protocolo.
 
 ## Decisões
 
-- **SQLite no app-base:** usa `node:sqlite` (embutido no Node 22) em vez de `better-sqlite3`, para evitar compilação nativa dentro do contêiner. Aprovado pela pesquisadora em 10/10/2026 (ver `protocolo/preregistro.md`).
-- **Rede:** nenhuma instalação de pacotes durante a rodada. As dependências vêm pré-instaladas no starter ou na imagem. Política aprovada em 10/10/2026: o registro npm é liberado apenas no passo de preparo (`npm ci`), antes do isolamento; o agente roda em rede isolada.
+- **SQLite no app-base:** usa `node:sqlite` (embutido no Node 22) em vez de `better-sqlite3`, para evitar compilação nativa dentro do contêiner. Aprovado pela pesquisadora em 12/10/2026 (ver `protocolo/preregistro.md`).
+- **Rede:** nenhuma instalação de pacotes durante a rodada. As dependências vêm pré-instaladas no starter ou na imagem. Política aprovada em 12/10/2026: o registro npm é liberado apenas no passo de preparo (`npm ci`), antes do isolamento; o agente roda em rede isolada.
 
 ## Verificação
 

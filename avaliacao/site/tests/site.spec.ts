@@ -213,11 +213,21 @@ test('S10 - layout utilizavel em 360/768/1440', async ({ page }) => {
       await page.setViewportSize({ width: largura, height: 800 });
       await page.goto('/');
       await page.waitForTimeout(300);
-      const overflow = await page.evaluate(() => {
+      const info = await page.evaluate(() => {
         const doc = document.documentElement;
-        return doc.scrollWidth - doc.clientWidth;
+        return {
+          overflow: doc.scrollWidth - doc.clientWidth,
+          texto: document.body.innerText.trim().length,
+          titulos: document.querySelectorAll('h1,h2,h3').length,
+          controles: document.querySelectorAll('a,button,input,select').length,
+        };
       });
-      if (overflow > 4) throw new Error(`transbordo horizontal em ${largura}px (${overflow})`);
+      // Uma pagina vazia nao tem transbordo, mas tambem nao e "utilizavel":
+      // sem conteudo minimo, o criterio nao pode pontuar.
+      if (info.texto < 200 || info.titulos < 1 || info.controles < 1) {
+        throw new Error(`pagina sem conteudo suficiente em ${largura}px (texto=${info.texto}, titulos=${info.titulos}, controles=${info.controles})`);
+      }
+      if (info.overflow > 4) throw new Error(`transbordo horizontal em ${largura}px (${info.overflow})`);
       medidas.push(`${largura}px:ok`);
     }
     return medidas.join(' ');

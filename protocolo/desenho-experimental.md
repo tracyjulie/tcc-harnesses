@@ -1,6 +1,6 @@
 # Desenho experimental
 
-Resumo operacional (detalhamento no plano v2). Congelado em 10/10/2026.
+Resumo operacional (detalhamento no plano v2). Registro de 12/10/2026 (congelado com a tag `congelamento-v1`).
 
 - **Delineamento:** fatorial 3 harnesses × 3 modelos × 3 cenários × 3 prompts
   = 81 condições; até 2 repetições = 162 execuções (`dados/plano_162_execucoes.csv`).

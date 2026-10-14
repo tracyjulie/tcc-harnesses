@@ -1,19 +1,25 @@
-Observacao: o host Windows e usado apenas para editar o repositorio. A coleta roda
-no servidor Ubuntu; as versoes que valem sao as do servidor e as da imagem.
+Data de registro: 12/10/2026
+Nenhuma rodada oficial foi executada ate esta data. Este arquivo descreve o
+ambiente que vale para a coleta: o servidor Ubuntu e a imagem Docker. O host
+Windows e usado apenas para editar o repositorio.
+O runner le as secoes "=== Claude Code ===", "=== Codex ===" e "=== OpenCode ==="
+(a primeira linha de cada uma e a versao); nao renomeie essas tres secoes.
+
+=== Servidor de coleta ===
+Ubuntu 26.04.1 LTS "resolute" (kernel 7.0.0-38)
+Docker 29.8.2, build 7fc2dff
+Conferido em 12/10/2026: docker --version
 
 === Python (orquestrador) ===
-Host do servidor: 3.14.4 | Alvo do projeto (imagem): 3.10.10
-DECISAO (10/10/2026): o orquestrador roda no Python do host do servidor (3.14.4).
-Usa somente a biblioteca padrao e mantem-se compativel com 3.10.10 (alvo do
-plano), de modo que pode ser reexecutado no interpretador 3.10.10 sem alteracao.
+Host do servidor: 3.14.4 | Imagem do experimento: 3.10.10 (alvo do plano)
+O orquestrador usa so a biblioteca padrao. Conferido em 12/10/2026: roda no
+Python 3.10.10 da imagem (runner.py --dry-run dentro de tcc-harnesses:v1).
 
 === Node (runtime dos cenarios e do avaliador) ===
-DECISAO (10/10/2026): Node 22 fixado em 22.23.3 (o mesmo da imagem).
-- Host do servidor: Node 20.20.2 (nao usado para avaliar; ver nota do avaliador).
-- A imagem do experimento usa Node 22.23.3.
-- Os starters foram validados com Node 22; o README dos fixtures citava 22.17.0
-  por engano e foi corrigido para 22.23.3.
-Bun: nao utilizado (DECISAO 10/10/2026).
+Imagem: v22.23.3 (npm 10.9.9). Esta e a versao que vale.
+Host do servidor: v20.20.2 (NAO usado para avaliar nem para rodar agentes).
+Bun: nao utilizado.
+O app usa node:sqlite, que exige Node 22.
 
 === Claude Code ===
 2.1.197 (Claude Code)
@@ -24,52 +30,76 @@ codex-cli 0.160.0
 === OpenCode ===
 1.18.34
 
-=== Servidor de coleta ===
-Ubuntu 26.04.1 LTS "resolute" (kernel 7.0.0-38)
-Docker 29.8.2, build 7fc2dff
-
 === Imagem do experimento ===
 tcc-harnesses:v1 (docker/Dockerfile)
-  Base: python:3.10.10-slim
-  Node: v22.23.3 (npm 10.9.9)
-  Harnesses: claude-code 2.1.197, codex 0.160.0, opencode 1.18.34
-  Inclui libs de sistema do Chromium (para o avaliador Playwright).
-  id da imagem (10/10/2026): 16c0d026d1c7
-Observacao: uma imagem orfa `tcc-harnesses:v2` (Node 20, versoes sem pino,
-venv com requirements.lock inexistente) foi removida em 10/10/2026.
-A imagem foi reconstruida em 10/10/2026 para incluir as libs do Chromium; o id
-anterior (6da2ef8ed08d) nao contem essas libs.
+id completo: sha256:16c0d026d1c72cd5d60687582fff4357183a53d756ae0cfbe7285901126355ca
+Base: python:3.10.10-slim (Debian bullseye, via archive.debian.org)
+Node 22 instalado pelo NodeSource (setup_22.x): o Dockerfile NAO fixa o patch do
+Node. Por isso a imagem v1 (identificada pelo id acima) e a fonte da verdade:
+NAO reconstrua a imagem durante a coleta. O manifesto de cada rodada registra o
+id da imagem e as versoes lidas de dentro do conteiner.
+Harnesses instalados com versao fixa por npm (claude-code, codex, opencode-ai).
+Inclui as bibliotecas de sistema do Chromium (para o avaliador Playwright).
+Usuario do agente: executor (uid 1000), nao-root.
+
+=== Conteiner do agente: limites e isolamento ===
+Rede: rede-experimento (docker network --internal), sem saida para a internet;
+gateway 172.18.0.1 (o IP muda se a rede for recriada; o runner o descobre).
+Recursos: 2 CPUs, 4 GB de memoria, 512 processos (argumentos --cpus, --memory,
+--pids-limit do runner).
+Seguranca: --cap-drop ALL e --security-opt no-new-privileges.
+HOME descartavel por rodada (runs/<id>/home); workspace novo a cada rodada.
+Tempo maximo por rodada: 1200 s. Custo maximo por rodada: US$ 2,00 (vigia do
+runner; ao atingir, o conteiner e encerrado e o desfecho e timeout).
 
 === Avaliador ===
-Playwright 1.64.0 (Chromium 1248 / chromium_headless_shell 1248), Vitest 3.2.4.
-Dependencias do avaliador pinadas por `avaliacao/<cenario>/package-lock.json`.
-DECISAO (10/10/2026): o avaliador roda em um conteiner a partir de
-`tcc-harnesses:v1` (Node 22.23.3), com o repositorio e o cache de browsers do
-host montados. Motivo: o cenario `app` usa `node:sqlite` (Node 22), e o Node do
-host (20) nao serve. O avaliador permanece fora do alcance do agente (secao
-7.10 item 10 do plano).
+Playwright 1.64.0 (Chromium 1248, chromium_headless_shell 1248, ffmpeg 1013).
+Vitest 3.2.4 aparece como dependencia mas NAO e usado (ver avaliacao/METODOLOGIA.md).
+ESLint: nao utilizado. A analise estatica e o tsc --noEmit do proprio build.
+Dependencias pinadas por avaliacao/<cenario>/package-lock.json.
+Roda em conteiner a partir de tcc-harnesses:v1, com o repositorio montado SOMENTE
+LEITURA (apenas a pasta da propria rodada e gravavel) e o cache de browsers do
+host (~/.cache/ms-playwright) montado somente leitura.
 
-=== Router de inferencia (9router) ===
-Porta 20128; chave em ~/.tcc-segredos/9router.key.
-Ponto unico de instrumentacao (plano secao 6.3 e 7.11):
-  Banco: ~/.9router/db/data.sqlite (SQLite; env TCC_LOGS_ROUTER aponta para ele)
-  Tabelas: usageHistory (custo/tokens por chamada) e requestDetails (request/response).
+=== Starters (fixtures) ===
+sha256 de package-lock.json (conferido em 12/10/2026):
+  site-base  010083ffc11a4a874ddb19fad1ca0e26a9a5c323d33cd2281cf53290db4f107e
+  jogo-base  d82f0e485c08e07e272e8420459ba799ddc0c4aa3881435c61a7dad0da641915
+  app-base   12d46e662b2db9ef6c9c8aae7b0a55069493b4a11bd6f91fe92c1d99e96656e2
+npm ci + npm run build: exit 0 nos tres, dentro da imagem.
+
+=== Roteador de inferencia (9router) ===
+Versao: v0.5.95 (verificada em 12/10/2026)
+Porta: 20128. Chave em ~/.tcc-segredos/9router.key (permissao 600).
+Ponto unico de instrumentacao (plano secoes 6.3 e 7.11):
+  Banco: ~/.9router/db/data.sqlite (SQLite; variavel TCC_LOGS_ROUTER aponta para ele)
+  Tabelas: usageHistory (custo e tokens por chamada) e requestDetails.
   usageHistory: timestamp, provider, model, endpoint, promptTokens,
-  completionTokens, cost (USD), status, tokens (json com cached_tokens e
-  reasoning_tokens).
-Modelos expostos (10/10/2026, confirmado em /v1/models):
-  openrouter/deepseek/deepseek-v4.1-flash
-  openrouter/anthropic/claude-haiku-5.5
-  openrouter/openai/gpt-6-luna
+  completionTokens, cost (USD), status, tokens (json com cached_tokens e reasoning_tokens).
+  O banco contem registros anteriores ao inicio da coleta; cada rodada le apenas
+  a sua janela de tempo.
+Recursos que alteram a requisicao (RTK, Caveman, Ponytail, Headroom): DESLIGADOS
+(captura em protocolo/evidencias/).
+Endpoint usado por cada harness (confirmado em usageHistory em 12/10/2026):
+  OpenCode /v1/chat/completions | Codex /v1/responses | Claude Code /v1/messages
 
-=== Provedores de inferencia (OpenRouter via 9router) ===
-GPT-6 Luna          -> openai    (rota openrouter/openai/gpt-6-luna)
-Claude Haiku 5.5    -> anthropic (rota openrouter/anthropic/claude-haiku-5.5)
-DeepSeek V4.1 Flash -> relace    (rota openrouter/deepseek/deepseek-v4.1-flash)
+=== Modelos e provedores (OpenRouter via 9router) ===
+GPT-6 Luna          openai/gpt-6-luna                 provedor OpenAI
+Claude Haiku 5.5    anthropic/claude-haiku-5.5        provedor Anthropic
+DeepSeek V4.1 Flash deepseek/deepseek-v4.1-flash      provedor Relace
+(slug registrado pelo 9router; o ID da Anthropic e claude-haiku-5-5, com hifen)
+A variante GPT-6 Luna Pro NAO e utilizada.
+Provedores fixados no OpenRouter em duas camadas (capturas em protocolo/evidencias/):
+  Privacy -> Allowed Providers: Anthropic, OpenAI, Relace
+  Model & Provider Access -> Allowed Providers e Allowed Models: os tres acima
+Prova por chamada: python3 scripts/verificar_provedor.py
 
-=== Estado (10/10/2026) ===
-Rotas confirmadas em http://127.0.0.1:20128/v1/models (9router).
-DECISAO: o modelo Luna e `gpt-6-luna` (alias `openai/gpt-6-luna`); a variante
-"Pro" NAO sera utilizada. O plano citava "GPT-6 Luna Pro"; corrigido aprovado
-pela pesquisadora em 10/10/2026.
-Custo e tokens por rodada sao lidos de usageHistory (ver orchestrator/router_logs.py).
+=== Fila e sorteio ===
+Fila: dados/plano_162_execucoes.csv (162 linhas: 81 condicoes x 2 repeticoes).
+Sorteio: random.Random(20261009).shuffle dentro de cada etapa de 27 (Mersenne
+Twister do Python). Regenerar a fila (scripts/gerar_fila.py) produz o mesmo arquivo
+(conferido em 12/10/2026).
+
+=== Orcamento ===
+Saldo experimental oficial: a registrar quando o ambiente estiver pronto para as
+162 execucoes (previsto: US$ 20,00).

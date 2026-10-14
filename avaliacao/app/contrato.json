@@ -1,5 +1,5 @@
 {
-  "_observacao": "Contrato do aplicativo. DECISAO 10/10/2026 (pesquisadora delegou): os criterios A02-A10 sao avaliados por DESCOBERTA, dirigindo a interface e observando as rotas de API que a propria aplicacao usa; rotas nao sao fixadas no artefato congelado. Justificativa: o enunciado nao fixa rotas nem credenciais, e fixa-las puniria escolhas legitimas (plano 7.10 item 10; guia secao 08). 'start_cmd' pode ser preenchido para forcar um comando de inicializacao; enquanto for null, o avaliador descobre o script (dev/start/serve/preview) no package.json e tenta portas comuns, passando PORT.",
+  "_observacao": "Contrato do aplicativo. DECISAO 12/10/2026 (pesquisadora delegou): os criterios A02-A10 sao avaliados por DESCOBERTA, dirigindo a interface e observando as rotas de API que a propria aplicacao usa; rotas nao sao fixadas no artefato congelado. Justificativa: o enunciado nao fixa rotas nem credenciais, e fixa-las puniria escolhas legitimas (plano 7.10 item 10; guia secao 08). 'start_cmd' pode ser preenchido para forcar um comando de inicializacao; enquanto for null, o avaliador descobre o script (dev/start/serve/preview) no package.json e tenta portas comuns, passando PORT.",
   "start_cmd": null,
   "portas_testadas": [3000, 5173, 4173, 8080, 8000, 4000],
   "scripts_preferidos": ["dev", "start", "serve", "preview"],

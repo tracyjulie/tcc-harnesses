@@ -70,7 +70,7 @@ def main():
               "modelo_rotulo", "modelo_id", "provedor", "prompt", "repeticao", "status"]
     SAIDA.parent.mkdir(parents=True, exist_ok=True)
     with SAIDA.open("w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=campos)
+        w = csv.DictWriter(f, fieldnames=campos, lineterminator="\n")
         w.writeheader()
         w.writerows(saida)
     print(f"{len(saida)} linhas -> {SAIDA}")

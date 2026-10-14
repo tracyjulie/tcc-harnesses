@@ -1,6 +1,6 @@
 {
   "cenario": "site",
-  "fonte": "plano-tcc-harnesses-v2.md secao 8.1 (pesos aprovados 10/10/2026)",
+  "fonte": "plano-tcc-harnesses-v2.md secao 8.1 (pesos aprovados 12/10/2026)",
   "criterios": [
     { "id": "S01", "descricao": "Projeto compila e aplicacao abre", "peso": 5, "verificavel": true },
     { "id": "S02", "descricao": "Secoes navegaveis e semantica adequada", "peso": 2, "verificavel": true },

@@ -19,7 +19,7 @@ protocolo/     preregistro, checkpoints, piloto de compatibilidade
 prompts/       os nove enunciados congelados (site/jogo/app × P1-P3)
 fixtures/      starters dos três cenários (sem solução e sem testes)
 avaliacao/     avaliador independente (Playwright) + regras de pontuação
-orchestrator/  runner, normalizer, adapters, leitura do 9router
+orchestrator/  runner, preflight, normalizer, adapters, leitura do 9router, testes
 docker/        imagem fixa do experimento (Node 22)
 dados/         fila de 162 execuções e resultados
 ```
@@ -27,10 +27,13 @@ dados/         fila de 162 execuções e resultados
 Comandos úteis:
 
 ```
-python scripts/gerar_fila.py
-python3 orchestrator/runner.py --limit 2 --dry-run
-python3 orchestrator/runner.py --pilot            # piloto de compatibilidade
-python3 orchestrator/runner.py --etapa 1          # coleta (só com protocolo congelado)
+python3 scripts/gerar_fila.py
+python3 -m unittest discover -s orchestrator/tests -v        # testes (sem Docker, sem custo)
+python3 orchestrator/runner.py --limit 2 --dry-run --no-gateway
+python3 orchestrator/preflight.py --verificar-ambiente        # ambiente = congelamento?
+python3 scripts/verificar_provedor.py                         # prova o provedor de cada modelo
+python3 orchestrator/runner.py --pilot                        # piloto de compatibilidade (gasta crédito)
+python3 orchestrator/runner.py --etapa 1                      # coleta (só com protocolo congelado)
 ```
 
 A coleta real não deve ser iniciada sem aprovação explícita da pesquisadora e

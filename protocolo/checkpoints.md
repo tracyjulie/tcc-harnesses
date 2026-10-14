@@ -1,48 +1,47 @@
-# Verificacoes entre etapas
+# Verificações entre etapas
 
-Registro das verificacoes da secao 7 de `MANUAL-RODADAS.md` (plano v2, secao 7.8). Uma secao por verificacao, preenchida antes de iniciar a etapa seguinte.
+Registro das verificações da seção 7 de `MANUAL-RODADAS.md` (plano v2, seção 7.8). Uma seção por verificação, preenchida antes de iniciar a etapa seguinte.
 
-> Template. So deve ser preenchido apos a coleta de cada etapa. As decisoes de
-> teto/limiar estao congeladas em `protocolo/preregistro.md` (10/10/2026):
-> tempo 20 min/rodada, custo US$ 2/rodada, sucesso = build ok e B >= 50,
-> retry 1. Nada foi coletado ainda (fila em 162 planejadas).
+> Modelo em branco: nenhuma etapa foi coletada. As decisões de teto e de limiar estão em `protocolo/preregistro.md` (tempo 20 min por rodada, custo US$ 2 por rodada, sucesso = build aprovado e B >= 50, 1 nova tentativa, margem de 20%).
 
-
-## Verificacao 1 (apos etapa 1, site R1)
+## Verificação 1 (após etapa 1, site R1)
 - Data:
 - Consumo observado (tokens e custo, por modelo):
-- Projecao da etapa 2 (margem de 20%):
-- Integridade (27 execucoes com as sete capturas):
-- Decisao (prosseguir / ajustar / encerrar):
+- Projeção da etapa 2 (margem de 20%):
+- Integridade (27 execuções com as capturas):
+- Decisão (prosseguir / ajustar / encerrar):
 
-## Verificacao 2 (apos etapa 2, jogo R1)
+## Verificação 2 (após etapa 2, jogo R1)
 - Data:
 - Consumo observado:
-- Projecao da etapa 3:
+- Projeção da etapa 3:
 - Integridade:
-- Decisao:
+- Decisão:
 
-## Verificacao 3 (apos etapa 3, app R1; desenho minimo de 81 completo)
+## Verificação 3 (após etapa 3, app R1; desenho mínimo de 81 completo)
 - Data:
 - Consumo observado:
-- Projecao da etapa 4:
+- Projeção da etapa 4:
 - Integridade:
-- Decisao:
+- Decisão:
 
-## Verificacao 4 (apos etapa 4, site R2; condicionada ao saldo)
+## Verificação 4 (após etapa 4, site R2; condicionada ao saldo)
 - Data:
 - Consumo observado:
-- Projecao da etapa 5:
+- Projeção da etapa 5:
 - Integridade:
-- Decisao:
+- Decisão:
 
-## Verificacao 5 (apos etapa 5, jogo R2; condicionada ao saldo)
+## Verificação 5 (após etapa 5, jogo R2; condicionada ao saldo)
 - Data:
 - Consumo observado:
-- Projecao da etapa 6:
+- Projeção da etapa 6:
 - Integridade:
-- Decisao:
+- Decisão:
 
 ## Desvios de protocolo
-| Data | Descricao | Impacto nas rodadas | Decisao |
+
+Só entram aqui mudanças feitas DEPOIS do congelamento (`git tag congelamento-v1`). As decisões tomadas antes dele estão em `preregistro.md`.
+
+| Data | Descrição | Impacto nas rodadas | Decisão |
 |---|---|---|---|

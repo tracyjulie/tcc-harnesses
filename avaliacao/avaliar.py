@@ -36,15 +36,15 @@ CENARIOS = {
 
 
 def npm():
-    return "npm.cmd" if os.name == "nt" else "npm"
+    return "npm"
 
 
 def npx():
-    return "npx.cmd" if os.name == "nt" else "npx"
+    return "npx"
 
 
 def node():
-    return "node.exe" if os.name == "nt" else "node"
+    return "node"
 
 
 def escolher_porta():
@@ -79,7 +79,14 @@ def instalar_dependencias(snapshot, log):
         return True
     if executar([npm(), "ci"], snapshot, log, timeout=1200) == 0:
         return True
-    return executar([npm(), "install", "--no-audit", "--no-fund"], snapshot, log, timeout=1200) == 0
+    # `npm ci` falhou (lockfile inconsistente com o package.json do agente): tenta
+    # `npm install`, mas REGISTRA o fato em avaliacao-resultados/DEPS_FALLBACK.json.
+    ok = executar([npm(), "install", "--no-audit", "--no-fund"], snapshot, log, timeout=1200) == 0
+    destino = log.parent / "avaliacao-resultados"
+    destino.mkdir(parents=True, exist_ok=True)
+    (destino / "DEPS_FALLBACK.json").write_text(
+        json.dumps({"npm_ci_falhou": True, "npm_install_ok": ok}), encoding="utf-8")
+    return ok
 
 
 def build(snapshot, log):
@@ -156,6 +163,9 @@ def rodar_playwright(cenario, log, results_dir, base_url):
         "APP_URL": base_url,
         "RESULTS_DIR": str(results_dir),
         "PW_REPORT": str(results_dir.parent / "playwright-report.json"),
+        # o repositorio pode estar montado somente leitura: artefatos do Playwright
+        # vao para a pasta da rodada
+        "PW_OUTPUT_DIR": str(results_dir.parent / "pw-output"),
     }
     return executar([npx(), "playwright", "test"], AVALIACAO / cenario, log,
                     timeout=1800, env=ambiente)

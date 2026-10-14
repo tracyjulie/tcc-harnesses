@@ -15,7 +15,9 @@ RUN echo "deb http://archive.debian.org/debian bullseye main" > /etc/apt/sources
         fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
-# instala o gerenciador de pacotes Node, necessario para alguns harnesses de CLI
+# Node 22 (NodeSource). ATENCAO: setup_22.x instala a 22.x mais recente do dia do build,
+# entao o patch do Node NAO e fixado aqui. A imagem tcc-harnesses:v1 (id em VERSOES.txt) e a
+# fonte da verdade (Node v22.23.3): nao reconstrua durante a coleta.
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs
 
@@ -24,7 +26,8 @@ RUN npm install -g @anthropic-ai/claude-code@2.1.197
 RUN npm install -g @openai/codex@0.160.0
 RUN npm install -g opencode-ai@1.18.34
 
-# usuario nao-root, HOME descartavel (ver Passo 6)
+# usuario nao-root; o HOME real do agente e um diretorio descartavel por rodada
+# (montado pelo runner em /home/executor)
 RUN useradd -m executor
 USER executor
 WORKDIR /home/executor

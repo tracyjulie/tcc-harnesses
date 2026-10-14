@@ -1,49 +1,33 @@
-=== Claude Code ===
-claude -p "PROMPT" --tools "Read,Write,Edit,Bash,Glob,Grep,TodoWrite" --dangerously-skip-permissions
+# Configuração dos harnesses no ambiente isolado
 
-=== Codex ===
-codex exec "SEU_PROMPT_AQUI"
+Registro de 12/10/2026. Tudo abaixo corresponde ao que o código faz (`orchestrator/runner.py`, função `preparar_home`, e `orchestrator/adapters/`). Se mudar um, mude o outro.
 
-mkdir -p ~/.codex
-cat > ~/.codex/config.toml << 'EOF'
-[tools]
-web_search = false
-EOF
+## Comandos efetivos
 
-=== OpenCode ===
-cat > opencode.json << 'EOF'
-{
-  "$schema": "https://opencode.ai/config.json",
-  "tools": {
-    "webfetch": false
-  },
-  "websearch": false
-}
-EOF
+```
+claude -p "$(cat prompt.txt)" --model "M" --tools "Read,Write,Edit,Bash,Glob,Grep,TodoWrite" --verbose --dangerously-skip-permissions --output-format stream-json
+codex exec --json --model "M" --skip-git-repo-check --dangerously-bypass-approvals-and-sandbox - < prompt.txt
+opencode run --model "P/M" --format json --auto "$(cat prompt.txt)"
+```
 
-=== Configuracao de cada harness no ambiente isolado ===
-Claude Code
-  Restricao de ferramentas: --tools define quais ferramentas internas existem para o modelo; --allowedTools apenas pre-aprova e nao as remove.
-  Comando: claude -p "PROMPT" --tools "Read,Write,Edit,Bash,Glob,Grep,TodoWrite" --dangerously-skip-permissions
+Flags confirmadas com `--help` nas versões congeladas (Claude Code 2.1.197, Codex 0.160.0, OpenCode 1.18.34).
 
-OpenCode
-  Arquivo de configuracao no HOME da rodada (OPENCODE_CONFIG=/home/executor/opencode.json), fora do workspace, para que o diretorio de trabalho comece vazio.
-  Permissoes: edit=allow, bash=allow, webfetch=deny. Temperatura 0 e limite de passos definidos em agent.build.
+## Equalização de autonomia (plano 7.10 item 5)
 
-Codex
-  Protocolo: wire_api="responses" (versoes atuais nao aceitam "chat"); o 9router precisa expor /v1/responses.
+- Claude Code: `--dangerously-skip-permissions`. `--tools` define quais ferramentas existem para o modelo (sem busca web); `--allowedTools` só pré-aprova e não remove.
+- Codex: `--dangerously-bypass-approvals-and-sandbox`. O isolamento real é o contêiner. `--skip-git-repo-check` porque o workspace não tem `.git`.
+- OpenCode: `--auto`.
 
-=== Flags confirmadas com --help (10/10/2026, imagem tcc-harnesses:v1) ===
-Claude Code 2.1.197: -p/--print, --model, --tools <tools...>, --output-format stream-json,
-  --dangerously-skip-permissions, --allowedTools/--disallowedTools.
-Codex 0.160.0: exec, --json (JSONL), -m/--model, -s/--sandbox, -C/--cd,
-  --skip-git-repo-check, --dangerously-bypass-approvals-and-sandbox.
-OpenCode 1.18.34: run, -m/--model (provider/model), --format json, --auto,
-  -c/--continue, -s/--session, --pure, --agent.
+## Busca web desligada
 
-Comandos efetivos usados pelo orquestrador (orchestrator/adapters/):
-  claude -p "$(cat prompt.txt)" --model "M" --tools "Read,Write,Edit,Bash,Glob,Grep,TodoWrite" --dangerously-skip-permissions --output-format stream-json
-  codex exec --json --model "M" --skip-git-repo-check --dangerously-bypass-approvals-and-sandbox - < prompt.txt
-  opencode run --model "P/M" --format json --auto "$(cat prompt.txt)"
+- Claude Code: não há ferramenta de busca na lista de `--tools`.
+- Codex: `[tools] web_search = false` em `~/.codex/config.toml` (HOME da rodada).
+- OpenCode: `"tools": {"webfetch": false}` em `opencode.json` (apontado por `OPENCODE_CONFIG`, no HOME da rodada, fora do workspace).
+- Em qualquer caso, o contêiner não tem saída para a internet.
 
-Nota: a autonomia foi equalizada (Claude --dangerously-skip-permissions, Codex bypass, OpenCode --auto), conforme a secao 7.10 item 5. O workspace nao tem .git, por isso o --skip-git-repo-check no Codex.
+## Provedor e protocolo
+
+- OpenCode: provedor `9router` (`@ai-sdk/openai-compatible`), endpoint `/v1/chat/completions`, temperatura 0 em `agent.build`.
+- Codex: `wire_api = "responses"` (versões atuais não aceitam `chat`); o 9router expõe `/v1/responses`.
+- Claude Code: `ANTHROPIC_BASE_URL` apontando para o 9router, endpoint `/v1/messages`.
+- Limite de passos: não aplicado. Os limites da rodada são tempo (1200 s) e custo (US$ 2,00).
